@@ -1,6 +1,63 @@
-{% extends "plantilla.html" %}
-
+{% extends "./plantilla.html" %}
 {% block content %}
-    <h1>Estadios</h1>
+<br>
+<h1 class="fa fa-list mb-0"> Estadios</h1>
 
+<div class="container mt-4">
+    <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="/nuevoEstadio" class="btn btn-primary">Nuevo Estadio</a>
+            </div>
+            
+            <hr>
+
+            <div class="table-responsive rounded">
+                <table class="table table-bordered table-striped table-hover" id="tbldis">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Direccion</th>
+                            <th>Capacidad</th>
+                            <th>Ciudad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estadio in estadios %}
+                        <tr>
+                            <td>{{ estadio.id }}</td>
+                            <td>{{ estadio.nombre }}</td>
+                            <td>{{ estadio.direccion }}</td>
+                            <td>{{ estadio.capacidad }}</td>
+                            <td>{{ estadio.ciudad }}</td>
+                            <td>
+                                <a href="editarEstadio/{{ estadio.id }}" class="btn btn-outline-warning">
+                                    <i class="fa fa-pen"></i> Editar
+                                </a>
+                                <a href="eliminarEstadio/{{ estadio.id }}" onclick="eliminarEstadio('{{ estadio.id }}')" class="btn btn-outline-danger">
+                                    <i class="fa fa-trash"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tbldis').DataTable({
+            buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
+            dom: 'Bfrtip',
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+            }
+        });
+    });
+</script>
 {% endblock %}
