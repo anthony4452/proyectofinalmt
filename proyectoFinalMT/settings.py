@@ -59,7 +59,7 @@ ROOT_URLCONF = 'proyectoFinalMT.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'Aplicaciones','templates')],
+        'DIRS': [os.path.join(BASE_DIR,'Aplicaciones','Template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,10 +79,15 @@ WSGI_APPLICATION = 'proyectoFinalMT.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'carnetdb',
+        'USER': 'postgres',
+        'PASSWORD': 'anthoo',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
