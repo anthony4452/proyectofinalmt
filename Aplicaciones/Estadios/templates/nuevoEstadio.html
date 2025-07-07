@@ -1,12 +1,35 @@
 {% extends "plantilla.html" %}
 
 {% block content %}
-<h1>Agregar Nuevo Estadio</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Agregar</button>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
 
-    <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">Cancelar</a>    
-</form>
+      <!-- Tarjeta del formulario -->
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+          <h3 class="mb-0"><i class="bi bi-building-fill-add"></i> Agregar Nuevo Estadio</h3>
+        </div>
+
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center gap-2 mt-4">
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-plus-circle-fill"></i> Agregar
+              </button>
+              <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">
+                <i class="bi bi-arrow-left-circle-fill"></i> Cancelar
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock %}
