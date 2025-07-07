@@ -7,7 +7,7 @@
     <div class="card shadow-lg rounded-4 border-0">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="/nuevoEstadio" class="btn btn-primary">Nuevo Estadio</a>
+                <a href="/nuevoEstadio" class="btn btn-success">Nuevo Estadio</a>
             </div>
             
             <hr>
@@ -44,6 +44,9 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">Cancelar</a>
+                </div>
             </div>
         </div>
     </div>

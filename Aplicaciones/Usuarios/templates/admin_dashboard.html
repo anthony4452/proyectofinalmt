@@ -7,7 +7,11 @@
 
     {% if rol == 'admin' %}
         <a href="/estadios/" class="btn btn-primary">Ver Estadios</a>
+        <br><br>
+        <div>
         <a href="/estadios/nuevoEstadio" class="btn btn-success">Crear Estadio</a>
+        </div>
+        <br>
     {% endif %}
 
     <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
