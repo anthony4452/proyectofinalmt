@@ -1,38 +1,48 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Estadio
 from .forms import EstadioForm
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required, user_passes_test
 
+# ✅ Función para verificar si el usuario es admin
+def es_admin(user):
+    return hasattr(user, 'perfilusuario') and user.perfilusuario.rol == 'admin'
 
-# Create your views here.
-
-def estadio (request):
+# ✅ Solo el admin puede acceder a esta vista
+@login_required
+@user_passes_test(es_admin)
+def estadio(request):
     estadios = Estadio.objects.all()
     return render(request, 'estadios.html', {'estadios': estadios})
+    
 
+@login_required
+@user_passes_test(es_admin)
 def editarEstadio(request, id):
-    estadio = get_object_or_404(Estadio, id=id)  # Obtén el estadio por su ID
+    estadio = get_object_or_404(Estadio, id=id)
     if request.method == 'POST':
         form = EstadioForm(request.POST, instance=estadio)
         if form.is_valid():
-            form.save()  # Guarda los cambios
-            return redirect('/')  # Redirige a la lista de estadios
+            form.save()
+            return redirect('/')
     else:
-        form = EstadioForm(instance=estadio)  # Carga los datos existentes en el formulario
+        form = EstadioForm(instance=estadio)
     return render(request, 'editarEstadio.html', {'form': form, 'estadio': estadio})
 
+@login_required
+@user_passes_test(es_admin)
 def nuevoEstadio(request):
     if request.method == 'POST':
         form = EstadioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')  # Redirige a la lista de estadios
+            return redirect('/estadios/')
     else:
         form = EstadioForm()
     return render(request, 'nuevoEstadio.html', {'form': form})
 
-
+@login_required
+@user_passes_test(es_admin)
 def eliminarEstadio(request, id):
-    estadio = Estadio.objects.get(id=id)
+    estadio = get_object_or_404(Estadio, id=id)
     estadio.delete()
     return redirect('/')

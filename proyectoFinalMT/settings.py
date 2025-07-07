@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Aplicaciones.Estadios',
     'Aplicaciones.Jugadores',
     'Aplicaciones.Partidos', 
+    'Aplicaciones.Usuarios',
 ]
 
 MIDDLEWARE = [
@@ -76,14 +77,13 @@ WSGI_APPLICATION = 'proyectoFinalMT.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'carnetdb',
         'USER': 'postgres',
         'PASSWORD': 'anthoo',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

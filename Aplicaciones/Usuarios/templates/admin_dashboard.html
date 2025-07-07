@@ -1,0 +1,15 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Bienvenido, administrador {{ usuario.username }}</h2>
+    <p>Este es tu panel de administración.</p>
+
+    {% if rol == 'admin' %}
+        <a href="/estadios/" class="btn btn-primary">Ver Estadios</a>
+        <a href="/estadios/nuevoEstadio" class="btn btn-success">Crear Estadio</a>
+    {% endif %}
+
+    <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
+</div>
+{% endblock %}

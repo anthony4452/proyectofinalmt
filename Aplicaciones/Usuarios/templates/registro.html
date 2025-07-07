@@ -1,0 +1,59 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Registro de Usuario</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <input type="text" name="username" class="form-control text-black bg-white border-dark" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" name="email" class="form-control text-black bg-white border-dark" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" name="password1" class="form-control text-black bg-white border-dark" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirmar Contraseña</label>
+                            <input type="password" name="password2" class="form-control text-black bg-white border-dark" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                            <select name="rol" class="form-select text-black bg-white border-dark" required>
+                                <option value="">Selecciona un rol</option>
+                                <option value="admin">Administrador</option>
+                                <option value="vocal">Vocal</option>
+                            </select>
+                        </div>
+
+                        {% if error %}
+                            <div class="alert alert-danger text-center">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
