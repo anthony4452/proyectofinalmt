@@ -1,34 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <title>Recuperación &mdash; Anthony Morales</title>
+  <title>Recuperación — Anthony Morales</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/icomoon/style.css'%}">
-
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/bootstrap/bootstrap.css'%}">
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/bootstrap/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/jquery-ui.css' %}">
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/owl.carousel.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/owl.theme.default.min.css'%}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/owl.theme.default.min.css'%}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/jquery.fancybox.min.css'%}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/bootstrap-datepicker.css'%}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/flaticon/font/flaticon.css'%}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/aos.css'%}">
-  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/style.css'%}">
-
-
-
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/jquery.fancybox.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/bootstrap-datepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/flaticon/font/flaticon.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/aos.css' %}">
+  <link rel="stylesheet" href="{% static 'plantilla/soccer/css/style.css' %}">
 </head>
 
 <body>
 
   <div class="site-wrap">
 
+    <!-- Menú móvil -->
     <div class="site-mobile-menu site-navbar-target">
       <div class="site-mobile-menu-header">
         <div class="site-mobile-menu-close">
@@ -38,39 +34,38 @@
       <div class="site-mobile-menu-body"></div>
     </div>
 
-
+    <!-- Header -->
     <header class="site-navbar py-4" role="banner">
-
       <div class="container">
         <div class="d-flex align-items-center">
           <div class="site-logo">
-            <a href="Aplicaciones/Web/home.html">
-              <img src="{% static 'plantilla/soccer/images/logo.png'%}" alt="Logo">
+            <a href="/">
+              <img src="{% static 'plantilla/soccer/images/logo.png' %}" alt="Logo">
             </a>
           </div>
           <div class="ml-auto">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li class="active"><a href="home" class="nav-link">Inicio</a></li>
-                <li class="active"><a href="contacto" class="nav-link">Contacto</a></li>
+                <li class="active"><a href="/" class="nav-link">Inicio</a></li>
+                <li><a href="#" class="nav-link">Contacto</a></li>
               </ul>
             </nav>
 
-            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span
-                class="icon-menu h3 text-white"></span></a>
+            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-white float-right">
+              <span class="icon-menu h3"></span>
+            </a>
           </div>
         </div>
       </div>
-
     </header>
 
+    <!-- Hero -->
     <div class="hero overlay" style="background-image: url('{% static "plantilla/soccer/images/bg_3.jpg" %}');">
-
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-5 ml-auto">
-            <h1 class="text-white">SOCCER! Ven y Juega con nosotros.</h1>
-            <p>Trabajo de Recuperación del dia Lunes y Martes.</p>
+            <h1 class="text-white">¡SOCCER! Ven y juega con nosotros.</h1>
+            <p>Trabajo de Recuperación del día Lunes y Martes.</p>
             <div id="date-countdown"></div>
             <p>
               <a href="#" class="btn btn-primary py-3 px-4 mr-3">Empezar</a>
@@ -81,59 +76,62 @@
       </div>
     </div>
 
-    
-    {% block content%}
+    <!-- Bloque de contenido -->
+    <main class="my-5">
+      {% block content %}
+      {% endblock %}
+    </main>
 
-
-
-    {% endblock %}
-
-
-    <footer class="footer-section">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-3">
-              <div class="widget mb-3">
-                <h3>Noticias</h3>
-                <ul class="list-unstyled links">
-                  <li><a href="#">Nticias del CLub</a></li>
-                  <li><a href="#">Videos</a></li>
-
-                </ul>
-              </div>
+    <!-- Footer -->
+    <footer class="footer-section bg-dark text-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="widget mb-3">
+              <h5>Noticias</h5>
+              <ul class="list-unstyled links">
+                <li><a href="#" class="text-white">Noticias del Club</a></li>
+                <li><a href="#" class="text-white">Videos</a></li>
+              </ul>
             </div>
-            <div class="col-lg-3">
-              <div class="widget mb-3">
-
-  
-            <div class="col-lg-3">
-              <div class="widget mb-3">
-                <h3>Redes Sociales</h3>
-                <ul class="list-unstyled links">
-                  <li><a href="#">Twitter</a></li>
-                  <li><a href="#">Facebook</a></li>
-                  <li><a href="#">Instagram</a></li>
-                  <li><a href="#">Youtube</a></li>
-                </ul>
-              </div>
-            </div>
-  
           </div>
-  
-          <div class="row text-center">
-            <div class="col-md-12">
-              <div class=" pt-5">
-                <p>
-                  Anthoo &copy;
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script> Juegos de Partidos de Futbol <i class="icon-heart"
-                    aria-hidden="true"></i> Por <a href="https://colorlib.com" target="_blank">Ingenieria en Sistemas</a>
-                </p>
-              </div>
+
+          <div class="col-lg-3 offset-lg-6">
+            <div class="widget mb-3">
+              <h5>Redes Sociales</h5>
+              <ul class="list-unstyled links">
+                <li><a href="#" class="text-white">Twitter</a></li>
+                <li><a href="#" class="text-white">Facebook</a></li>
+                <li><a href="#" class="text-white">Instagram</a></li>
+                <li><a href="#" class="text-white">YouTube</a></li>
+              </ul>
             </div>
           </div>
         </div>
+
+        <div class="row text-center pt-4">
+          <div class="col-md-12">
+            <p>
+              Anthoo &copy;
+              <script>document.write(new Date().getFullYear());</script> — Juegos de Fútbol |
+              <i class="icon-heart" aria-hidden="true"></i> por
+              <a href="https://colorlib.com" target="_blank" class="text-white">Ingeniería en Sistemas</a>
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="{% static 'plantilla/soccer/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'plantilla/soccer/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'plantilla/soccer/js/jquery-ui.js' %}"></script>
+  <script src="{% static 'plantilla/soccer/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'plantilla/soccer/js/jquery.fancybox.min.js' %}"></script>
+  <script src="{% static 'plantilla/soccer/js/aos.js' %}"></script>
+  <script src="{% static 'plantilla/soccer/js/main.js' %}"></script>
+
 </body>
 </html>
