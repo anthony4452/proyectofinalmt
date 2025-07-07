@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Aplicaciones.Jugadores',
     'Aplicaciones.Partidos', 
     'Aplicaciones.Usuarios',
+    'Aplicaciones.Arbitros',
 ]
 
 MIDDLEWARE = [

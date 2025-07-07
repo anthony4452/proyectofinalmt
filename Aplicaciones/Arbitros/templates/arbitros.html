@@ -1,0 +1,68 @@
+{% extends "./plantilla.html" %}
+{% block content %}
+<br>
+<h1 class="fa fa-list mb-0"> Árbitros</h1>
+
+<div class="container mt-4">
+    <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="/nuevoArbitro" class="btn btn-success">Nuevo Árbitro</a>
+            </div>
+            
+            <hr>
+
+            <div class="table-responsive rounded">
+                <table class="table table-bordered table-striped table-hover" id="tbldis">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Cédula</th>
+                            <th>Nacionalidad</th>
+                            <th>Edad</th>
+                            <th>Experiencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for arbitro in arbitros %}
+                        <tr>
+                            <td>{{ arbitro.id }}</td>
+                            <td>{{ arbitro.nombre }}</td>
+                            <td>{{ arbitro.cedula }}</td>
+                            <td>{{ arbitro.nacionalidad }}</td>
+                            <td>{{ arbitro.edad }}</td>
+                            <td>{{ arbitro.experiencia }} años</td>
+                            <td>
+                                <a href="editarArbitro/{{ arbitro.id }}" class="btn btn-outline-warning">
+                                    <i class="fa fa-pen"></i> Editar
+                                </a>
+                                <a href="eliminarArbitro/{{ arbitro.id }}" onclick="return confirm('¿Estás seguro de eliminar este árbitro?')" class="btn btn-outline-danger">
+                                    <i class="fa fa-trash"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tbldis').DataTable({
+            buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
+            dom: 'Bfrtip',
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+            }
+        });
+    });
+</script>
+{% endblock %}
