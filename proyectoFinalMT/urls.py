@@ -7,4 +7,5 @@ urlpatterns = [
     path('', include('Aplicaciones.Usuarios.urls')),
     path('estadios/', include('Aplicaciones.Estadios.urls')),
     path('arbitros/', include('Aplicaciones.Arbitros.urls')),
+    path('temporadas/', include('Aplicaciones.Temporadas.urls')),
 ]

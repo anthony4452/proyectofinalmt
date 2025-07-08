@@ -1,0 +1,6 @@
+<h2>¿Estás seguro que quieres eliminar la temporada "{{ temporada }}"?</h2>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Sí, eliminar</button>
+    <a href="{% url 'lista_temporadas' %}">Cancelar</a>
+</form>
