@@ -23,6 +23,9 @@
   <!-- Bootstrap FileInput CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/css/fileinput.min.css" rel="stylesheet" />
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
   <!-- CSS Locales y estilos propios -->
   <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/icomoon/style.css' %}" />
   <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/flaticon/font/flaticon.css' %}" />
@@ -32,7 +35,6 @@
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/bootstrap-datepicker.css' %}" />
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/aos.css' %}" />
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/style.css' %}" />
-
   {% block extra_css %}{% endblock %}
 </head>
 
@@ -51,7 +53,6 @@
           <div class="ms-auto">
             <nav class="site-navigation position-relative text-end" role="navigation">
               <ul class="site-menu main-menu js-clone-nav d-none d-lg-block">
-
                 {% if user.is_authenticated %}
                   {% if user.perfilusuario.rol == "admin" %}
                     {% url 'admin_dashboard' as admin_dashboard_url %}
@@ -70,7 +71,6 @@
                     <li class="{% if request.path == estadios_url %}active{% endif %}">
                       <a href="{{ estadios_url }}" class="nav-link">Estadios</a>
                     </li>
-
                   {% elif user.perfilusuario.rol == "vocal" %}
                     {% url 'vocal_dashboard' as vocal_dashboard_url %}
                     {% url 'jugadores' as jugadores_url %}
@@ -80,23 +80,18 @@
                     <li class="{% if request.path == jugadores_url %}active{% endif %}">
                       <a href="{{ jugadores_url }}" class="nav-link">Jugadores</a>
                     </li>
-
                   {% else %}
                     <li class="{% if request.path == '/' %}active{% endif %}">
                       <a href="/" class="nav-link">Inicio</a>
                     </li>
                   {% endif %}
-
                   <li><a href="{% url 'logout' %}" class="nav-link">Salir</a></li>
-
                 {% else %}
                   <li><a href="/" class="nav-link">Inicio</a></li>
                   <li><a href="{% url 'login' %}" class="nav-link">Iniciar sesión</a></li>
                 {% endif %}
-
               </ul>
             </nav>
-
             <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-white float-end">
               <span class="icon-menu h3"></span>
             </a>
@@ -106,12 +101,11 @@
     </header>
 
     <!-- Hero -->
-    <div class="hero overlay" style="background-image: url('{% static "plantilla/soccer/images/bg_3.jpg" %}'); padding: 80px 0;">
+    <div class="hero overlay" style="background-image: url('{% static "plantilla/soccer/images/bg_1.jpg" %}'); padding: 80px 0;">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-6 text-white">
             <h1 class="text-white">¡SOCCER! Ven y juega con nosotros.</h1>
-            <p>Trabajo de Recuperación del día Lunes y Martes.</p>
             <div id="date-countdown"></div>
             <p class="mt-3">
               <a href="#" class="btn btn-primary py-3 px-4 me-3">Empezar</a>
@@ -150,7 +144,6 @@
           </ul>
         </div>
       </div>
-
       <div class="text-center">
         <p class="mb-0">
           Anthoo &copy;
@@ -173,10 +166,8 @@
   <!-- jQuery Validation -->
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 
-  <!-- DataTables -->
+  <!-- DataTables y extensiones -->
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-  <!-- DataTables Buttons -->
   <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
@@ -185,12 +176,9 @@
   <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
 
-  <!-- Bootstrap FileInput -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/fileinput.min.js"
-    integrity="sha512-0wQvB58Ha5coWmcgtg4f11CTSSxfrfLClUp9Vy0qhzYzCZDSnoB4Vhu5JXJFs7rU24LE6JsH+6hpP7vQ22lk5w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <!-- Bootstrap FileInput Spanish translation -->
+  <!-- Bootstrap FileInput principal -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/fileinput.min.js"></script>
+  <!-- Bootstrap FileInput Español (CDN oficial GitHub) -->
   <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/locales/es.js"></script>
 
   <!-- Otros plugins -->
@@ -201,10 +189,8 @@
   <script src="{% static 'plantilla/soccer/js/aos.js' %}"></script>
   <script src="{% static 'plantilla/soccer/js/jquery.mb.YTPlayer.min.js' %}"></script>
   <script src="{% static 'plantilla/soccer/js/jquery.stellar.min.js' %}"></script>
-
   <script src="{% static 'plantilla/soccer/js/main.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
 </body>
-
 </html>

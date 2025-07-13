@@ -20,7 +20,7 @@
 
       <div class="form-group">
         <label for="anio">Año</label>
-        <input class="form-control" type="date" name="anio" id="anio" />
+        <input class="form-control" type="input" name="año" id="año" />
       </div>
 
       <div class="form-group">
@@ -35,7 +35,7 @@
 
       <div class="form-group">
         <label for="reglamento">Reglamento (PDF)</label>
-        <input type="file" name="reglamento" id="reglamento" class="file" />
+        <input type="file" name="reglamento" id="reglamento" />
       </div>
 
       <div class="form-group mt-4">
@@ -53,15 +53,15 @@
 {% block extra_js %}
 <script>
   $(document).ready(function () {
-    // Validación formulario
+    // Validación del formulario
     $("#frm_nueva_temporada").validate({
       rules: {
         nombreliga: { required: true, minlength: 2, maxlength: 100 },
         nombretorneo: { required: true, minlength: 2, maxlength: 100 },
-        anio: { required: true, date: true },
-        fecha_inicio: { required: true, date: true },
-        fecha_fin: { required: true, date: true },
-        reglamento: { extension: "pdf" }
+        año: { required: true, digits: true, minlength: 4, maxlength: 4 },
+        fecha_inicio: { required: true },
+        fecha_fin: { required: true },
+        reglamento: { required: true, extension: "pdf" }
       },
       messages: {
         nombreliga: {
@@ -74,19 +74,20 @@
           minlength: "Debe tener al menos 2 caracteres",
           maxlength: "No debe superar los 100 caracteres"
         },
-        anio: {
+        año: {
           required: "Ingrese el año",
-          date: "Formato de fecha inválido"
+          digits: "Solo números",
+          minlength: "Debe tener 4 dígitos",
+          maxlength: "Debe tener 4 dígitos"
         },
         fecha_inicio: {
-          required: "Ingrese la fecha de inicio",
-          date: "Formato de fecha inválido"
+          required: "Ingrese la fecha de inicio"
         },
         fecha_fin: {
-          required: "Ingrese la fecha de fin",
-          date: "Formato de fecha inválido"
+          required: "Ingrese la fecha de fin"
         },
         reglamento: {
+          required: "Debe subir el reglamento",
           extension: "Sólo se permite archivos PDF"
         }
       },
@@ -96,17 +97,16 @@
         error.insertAfter(element);
       }
     });
-
-    // Inicializar Bootstrap FileInput con idioma español
-    $("#reglamento").fileinput({
-      language: "es",
-      allowedFileExtensions: ["pdf"],
-      showUpload: false,
-      dropZoneEnabled: false,
-      browseClass: "btn btn-primary",
-      maxFileSize: 5000,
-      theme: "fa"
-    });
+  });
+</script>
+<script>
+  $("#reglamento").fileinput({
+          language: "es",
+          allowedFileExtensions: ["pdf"],
+          showCaption: false,
+          dropZoneEnabled: true,
+          showClose: false
   });
 </script>
 {% endblock %}
+
