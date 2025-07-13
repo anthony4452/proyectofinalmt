@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Aplicaciones.Usuarios',
     'Aplicaciones.Arbitros',
     'Aplicaciones.Temporadas',
+    'Aplicaciones.Traspasos',
 ]
 
 MIDDLEWARE = [
