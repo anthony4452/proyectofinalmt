@@ -4,8 +4,11 @@
 
 <head>
   <title>Soccer</title>
+  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Icono -->
+    <link rel="icon" href="{% static 'plantilla/soccer/images/logo_3.png' %}" />s
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
@@ -25,6 +28,10 @@
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Sweet Alert -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- CSS Locales y estilos propios -->
   <link rel="stylesheet" href="{% static 'plantilla/soccer/fonts/icomoon/style.css' %}" />
@@ -104,14 +111,7 @@
     <div class="hero overlay" style="background-image: url('{% static "plantilla/soccer/images/bg_1.jpg" %}'); padding: 80px 0;">
       <div class="container">
         <div class="row align-items-center">
-          <div class="col-lg-6 text-white">
-            <h1 class="text-white">¡SOCCER! Ven y juega con nosotros.</h1>
-            <div id="date-countdown"></div>
-            <p class="mt-3">
-              <a href="#" class="btn btn-primary py-3 px-4 me-3">Empezar</a>
-              <a href="#" class="text-light">Ver Más</a>
-            </p>
-          </div>
+
         </div>
       </div>
     </div>
@@ -192,5 +192,31 @@
   <script src="{% static 'plantilla/soccer/js/main.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
+
+    {% if messages%}
+         {%for mensaje in messages%}
+            <script>
+              Swal.fire({
+                title: "CONFIRMACIÓN",
+                text: "{{mensaje}}",
+                icon: "success"
+              });
+              </script>
+         {%endfor%}
+    {%endif%}
+
+
+
+
+
+<style>
+  .error{
+    color:red;
+    font-weight: bold
+  }
+  .form-control.error{
+    border: 1px solid red;
+  }
+</style>
 </body>
 </html>

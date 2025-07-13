@@ -7,7 +7,7 @@ from django.db import models
 class Temporada(models.Model):
     nombreliga = models.CharField(max_length=100)
     nombretorneo = models.CharField(max_length=100)
-    año = models.DateField()
+    año = models.IntegerField()
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     reglamento = models.FileField(upload_to='reglamentos/', null=True, blank=True)
