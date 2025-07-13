@@ -1,0 +1,57 @@
+/* admin_dashboard.css */
+
+/* General card style */
+.card {
+  background-color: #343a40; /* fondo oscuro */
+  color: #ffffff;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Card title spacing and size */
+.card-title {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+/* Button hover styles */
+.btn {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.4);
+}
+
+.btn-outline-success:hover {
+  background-color: #198754;
+  color: white;
+  box-shadow: 0 8px 20px rgba(25, 135, 84, 0.4);
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: black;
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+}
+
+.btn-outline-info:hover {
+  background-color: #0dcaf0;
+  color: white;
+  box-shadow: 0 8px 20px rgba(13, 202, 240, 0.4);
+}
+
+/* Logout card */
+.logout-card {
+  padding: 40px 0;
+}

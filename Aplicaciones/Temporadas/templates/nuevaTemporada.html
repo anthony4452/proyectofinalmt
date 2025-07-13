@@ -1,0 +1,112 @@
+{% extends "./plantilla.html" %}
+{% block content %}
+
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-plus mb-4"> Nueva Temporada</h1>
+
+    <form action="/guardarTemporada" method="POST" id="frm_nueva_temporada" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="nombreliga">Nombre de la Liga</label>
+        <input class="form-control" type="text" name="nombreliga" id="nombreliga" />
+      </div>
+
+      <div class="form-group">
+        <label for="nombretorneo">Nombre del Torneo</label>
+        <input class="form-control" type="text" name="nombretorneo" id="nombretorneo" />
+      </div>
+
+      <div class="form-group">
+        <label for="anio">Año</label>
+        <input class="form-control" type="date" name="anio" id="anio" />
+      </div>
+
+      <div class="form-group">
+        <label for="fecha_inicio">Fecha de Inicio</label>
+        <input class="form-control" type="date" name="fecha_inicio" id="fecha_inicio" />
+      </div>
+
+      <div class="form-group">
+        <label for="fecha_fin">Fecha de Fin</label>
+        <input class="form-control" type="date" name="fecha_fin" id="fecha_fin" />
+      </div>
+
+      <div class="form-group">
+        <label for="reglamento">Reglamento (PDF)</label>
+        <input type="file" name="reglamento" id="reglamento" class="file" />
+      </div>
+
+      <div class="form-group mt-4">
+        <button class="btn btn-outline-success" type="submit">GUARDAR</button>
+        <a href="/temporadas" class="btn btn-outline-danger ml-2">
+          <i class="fa fa-chevron-circle-left"></i> Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    // Validación formulario
+    $("#frm_nueva_temporada").validate({
+      rules: {
+        nombreliga: { required: true, minlength: 2, maxlength: 100 },
+        nombretorneo: { required: true, minlength: 2, maxlength: 100 },
+        anio: { required: true, date: true },
+        fecha_inicio: { required: true, date: true },
+        fecha_fin: { required: true, date: true },
+        reglamento: { extension: "pdf" }
+      },
+      messages: {
+        nombreliga: {
+          required: "Ingrese el nombre de la liga",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 100 caracteres"
+        },
+        nombretorneo: {
+          required: "Ingrese el nombre del torneo",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 100 caracteres"
+        },
+        anio: {
+          required: "Ingrese el año",
+          date: "Formato de fecha inválido"
+        },
+        fecha_inicio: {
+          required: "Ingrese la fecha de inicio",
+          date: "Formato de fecha inválido"
+        },
+        fecha_fin: {
+          required: "Ingrese la fecha de fin",
+          date: "Formato de fecha inválido"
+        },
+        reglamento: {
+          extension: "Sólo se permite archivos PDF"
+        }
+      },
+      errorElement: "div",
+      errorClass: "text-danger small",
+      errorPlacement: function (error, element) {
+        error.insertAfter(element);
+      }
+    });
+
+    // Inicializar Bootstrap FileInput con idioma español
+    $("#reglamento").fileinput({
+      language: "es",
+      allowedFileExtensions: ["pdf"],
+      showUpload: false,
+      dropZoneEnabled: false,
+      browseClass: "btn btn-primary",
+      maxFileSize: 5000,
+      theme: "fa"
+    });
+  });
+</script>
+{% endblock %}

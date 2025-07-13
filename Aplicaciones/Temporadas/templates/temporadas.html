@@ -1,0 +1,52 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">Temporadas</h2>
+    <a href="nuevaTemporada" class="btn btn-primary mb-3">Nueva Temporada</a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="temporada">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Liga</th>
+                    <th>Torneo</th>
+                    <th>Año</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in temporadas %}
+                <tr>
+                    <td>{{ t.nombreliga }}</td>
+                    <td>{{ t.nombretorneo }}</td>
+                    <td>{{ t.año|date:"Y" }}</td>
+                    <td>{{ t.fecha_inicio }}</td>
+                    <td>{{ t.fecha_fin }}</td>
+                    <td>
+                        <a href="{% url 'editar_temporada' t.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_temporada' t.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $('#temporada').DataTable({
+            buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
+            dom: 'Bfrtip',  
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+            }
+        });
+    });
+</script>
+{% endblock %}

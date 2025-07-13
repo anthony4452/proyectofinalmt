@@ -1,3 +1,6 @@
+# Aplicaciones/Jugadores/views.py
 from django.shortcuts import render
 
-# Create your views here.
+def lista_jugadores(request):
+    # lógica
+    return render(request, 'jugadores/lista.html')

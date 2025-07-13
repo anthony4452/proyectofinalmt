@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from .models import PerfilUsuario
-from django.db import IntegrityError
+from .decorators import rol_requerido  # Donde guardes el decorador
 from django.db import transaction
+from .models import PerfilUsuario
+from django.contrib.auth.models import User
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -25,6 +25,16 @@ def login_view(request):
         else:
             return render(request, 'login.html', {'error': 'Usuario o contraseña incorrectos'})
     return render(request, 'login.html')
+
+
+def error_403_view(request, exception):
+    rol = None
+    if request.user.is_authenticated:
+        try:
+            rol = request.user.perfilusuario.rol
+        except PerfilUsuario.DoesNotExist:
+            rol = None
+    return render(request, '403.html', {'rol': rol}, status=403)
 
 def logout_view(request):
     logout(request)
@@ -51,19 +61,20 @@ def registro_view(request):
             with transaction.atomic():
                 user = User.objects.create_user(username=username, email=email, password=password1)
                 PerfilUsuario.objects.create(usuario=user, rol=rol)
-            return redirect('login')  # Asegúrate que esta vista exista
+            return redirect('login')
         except Exception as e:
             return render(request, 'registro.html', {'error': f'Error al registrar: {str(e)}'})
 
     return render(request, 'registro.html')
 
-@login_required
+
+
+@rol_requerido('admin')
 def admin_dashboard(request):
     rol = request.user.perfilusuario.rol
     return render(request, 'admin_dashboard.html', {'rol': rol})
 
-@login_required
+@rol_requerido('vocal')
 def vocal_dashboard(request):
     rol = request.user.perfilusuario.rol
     return render(request, 'vocal_dashboard.html', {'rol': rol})
-

@@ -10,6 +10,7 @@ class Temporada(models.Model):
     año = models.DateField()
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
+    reglamento = models.FileField(upload_to='reglamentos/', null=True, blank=True)
 
     #def equipos(self):
         #return Equipo.objects.filter(temporada=self)

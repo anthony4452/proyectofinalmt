@@ -1,0 +1,8 @@
+# Ejemplo: Aplicaciones/Jugadores/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.listaequipos, name='equipos'),
+    # otras rutas...
+]

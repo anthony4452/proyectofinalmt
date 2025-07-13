@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Bienvenido, vocal {{ usuario.username }}</h2>
+    <h2>Bienvenido {{ user.perfilusuario.rol }}, {{ user.username }}</h2>
     <p>Este es tu panel de vocal.</p>
     <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
 </div>
