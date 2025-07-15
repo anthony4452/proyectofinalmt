@@ -1,0 +1,35 @@
+{% extends "plantilla.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <!-- Tarjeta del formulario -->
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-header bg-danger text-white text-center rounded-top-4">
+          <h3 class="mb-0"><i class="bi bi-people-fill"></i> Agregar Nuevo Equipo</h3>
+        </div>
+
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center gap-2 mt-4">
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-plus-circle-fill"></i> Agregar
+              </button>
+              <a href="/equipos/" class="btn btn-danger">
+                <i class="bi bi-arrow-left-circle-fill"></i> Cancelar
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
