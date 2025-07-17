@@ -12,3 +12,11 @@ class Equipo(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class ParticipacionEquipo(models.Model):
+    equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
+    temporada = models.ForeignKey(Temporada, on_delete=models.CASCADE)
+    fecha_registro = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('equipo', 'temporada')

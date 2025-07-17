@@ -38,7 +38,7 @@ class Jugador(models.Model):
             edad -= 1
         return edad
 
-class InscripcionJugador(models.Model):
+class InscripcionJugadores(models.Model):
     jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
     equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
     temporada = models.ForeignKey(Temporada, on_delete=models.CASCADE)
@@ -55,5 +55,5 @@ class InscripcionJugador(models.Model):
         return f"{self.jugador} - #{self.numero} - {self.equipo} ({self.temporada})"
 
     def historial_equipos(self):
-        equipos = InscripcionJugador.objects.filter(jugador=self).values_list('equipo__nombre', 'temporada__nombre')
+        equipos = InscripcionJugadores.objects.filter(jugador=self).values_list('equipo__nombre', 'temporada__nombre')
         return list(equipos)

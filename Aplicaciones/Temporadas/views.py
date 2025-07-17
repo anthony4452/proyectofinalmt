@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Temporada
 from django.http import FileResponse
+from django.contrib.auth.decorators import login_required
 
 
 def ver_pdf(request, id):
@@ -10,6 +11,7 @@ def ver_pdf(request, id):
 
 
 
+@login_required
 def temporadas(request):
     temporadas = Temporada.objects.all()
     return render(request, 'temporadas.html', {'temporadas': temporadas})
