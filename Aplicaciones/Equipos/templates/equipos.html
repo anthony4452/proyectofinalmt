@@ -29,11 +29,11 @@
                         <tr>
                             <td>{{ equipo.id }}</td>
                             <td>{{ equipo.nombre }}</td>
-                            <td class="text-center">
+                            <td>
                                 {% if equipo.logo %}
-                                    <img src="{{ equipo.logo.url }}" alt="Logo" style="height: 40px;">
+                                     <img src="{{ equipo.logo.url }}" height="80px" alt="">
                                 {% else %}
-                                    Sin logo
+                                     Sin logo
                                 {% endif %}
                             </td>
                             <td>{{ equipo.fundacion }}</td>

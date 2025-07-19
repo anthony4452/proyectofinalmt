@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,5 +13,9 @@ urlpatterns = [
     path('equipos/', include('Aplicaciones.Equipos.urls')),
 
 ]
+
+# Esta línea sirve para mostrar imágenes en desarrollo
+if settings.DEBUG:
+    urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
 handler403 = 'proyectoFinalMT.views.error_403_view'

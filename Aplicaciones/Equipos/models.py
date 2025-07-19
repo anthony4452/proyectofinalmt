@@ -5,7 +5,7 @@ from Aplicaciones.Temporadas.models import Temporada
 
 class Equipo(models.Model):
     nombre = models.CharField(max_length=100)
-    logo = models.FileField(upload_to='logos/')
+    logo = models.FileField(upload_to='logos/', null=True, blank=True)
     fundacion = models.DateField()
     presidente = models.CharField(max_length=100)
 
