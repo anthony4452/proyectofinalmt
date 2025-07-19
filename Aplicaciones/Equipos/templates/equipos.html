@@ -42,9 +42,10 @@
                                 <a href="editarEquipo/{{ equipo.id }}" class="btn btn-outline-warning">
                                     <i class="fa fa-pen"></i> Editar
                                 </a>
-                                <a href="eliminarEquipo/{{ equipo.id }}/" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro de eliminar este equipo?');">
-                                    <i class="fa fa-trash"></i> Eliminar
-                                </a>
+                            <a href="#" class="btn btn-outline-danger" onclick="confirmarEliminacion('{{ equipo.id }}')">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </a>
+
                             </td>
                         </tr>
                         {% endfor %}
@@ -59,14 +60,76 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#tbldis').DataTable({
-            buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
-            dom: 'Bfrtip',
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+    function confirmarEliminacion(id) {
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¡Esta acción no se puede deshacer!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "eliminarEquipo/" + id + "/";
             }
         });
+    }
+</script>
+<script>
+  $(document).ready(function () {
+    let table = $('#tbldis').DataTable({
+      language: {
+        lengthMenu: 'Mostrar _MENU_ registros por página',
+        zeroRecords: 'No se encontraron resultados',
+        info: 'Mostrando página _PAGE_ de _PAGES_',
+        infoEmpty: 'No hay registros disponibles',
+        infoFiltered: '(filtrado de _MAX_ registros totales)',
+        search: 'Buscar:',
+        paginate: {
+          previous: 'Anterior',
+          next: 'Siguiente'
+        }
+      },
+      dom: 
+        "<'row mb-3'" +
+          "<'col-md-6 d-flex align-items-center'B>" + 
+          "<'col-md-6 text-end'f>" +  // 👉 Búsqueda a la derecha
+        ">" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row mt-2'" +
+          "<'col-sm-12 col-md-5'i>" +
+          "<'col-sm-12 col-md-7 d-flex justify-content-end'p>" +  // 👉 Paginación a la derecha
+        ">",
+      buttons: [
+        {
+          extend: 'copy',
+          text: '<i class="fa fa-copy"></i> Copiar',
+          className: 'btn btn-dark me-2 mb-2'
+        },
+        {
+          extend: 'csv',
+          text: '<i class="fa fa-file-csv"></i> CSV',
+          className: 'btn btn-success me-2 mb-2'
+        },
+        {
+          extend: 'excel',
+          text: '<i class="fa fa-file-excel"></i> Excel',
+          className: 'btn btn-success me-2 mb-2'
+        },
+        {
+          extend: 'pdf',
+          text: '<i class="fa fa-file-pdf"></i> PDF',
+          className: 'btn btn-danger me-2 mb-2'
+        },
+        {
+          extend: 'print',
+          text: '<i class="fa fa-print"></i> Imprimir',
+          className: 'btn btn-primary me-2 mb-2'
+        }
+      ]
     });
+  });
 </script>
 {% endblock %}

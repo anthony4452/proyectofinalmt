@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Equipo
 from .forms import EquipoForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
+
 
 # Función para validar si el usuario es admin
 def es_admin(user):
@@ -22,6 +24,7 @@ def nuevoEquipo(request):
         form = EquipoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Equipo creado correctamente.')
             return redirect('/equipos/')
     else:
         form = EquipoForm()
@@ -36,6 +39,7 @@ def editarEquipo(request, id):
         form = EquipoForm(request.POST, request.FILES, instance=equipo)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Equipo actualizado correctamente.')
             return redirect('/equipos/')
     else:
         form = EquipoForm(instance=equipo)
@@ -45,4 +49,5 @@ def editarEquipo(request, id):
 def eliminarEquipo(request, id):
     equipo = get_object_or_404(Equipo, id=id)
     equipo.delete()
+    messages.success(request, 'Equipo eliminado correctamente.')
     return redirect('/equipos/')

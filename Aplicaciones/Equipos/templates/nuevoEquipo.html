@@ -14,9 +14,28 @@
         <div class="card-body">
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
 
-            <!-- Botones -->
+            <div class="mb-3">
+              <label for="id_nombre" class="form-label">Nombre</label>
+              {{ form.nombre }}
+            </div>
+
+            <!-- Aquí va el campo logo con drag and drop -->
+            <div class="mb-3">
+              <label for="id_logo" class="form-label">Logo del equipo</label>
+              <input type="file" name="logo" id="id_logo">
+            </div>
+
+            <div class="mb-3">
+              <label for="id_fundacion" class="form-label">Fundación</label>
+              {{ form.fundacion }}
+            </div>
+
+            <div class="mb-3">
+              <label for="id_presidente" class="form-label">Presidente</label>
+              {{ form.presidente }}
+            </div>
+
             <div class="d-flex justify-content-center gap-2 mt-4">
               <button type="submit" class="btn btn-success">
                 <i class="bi bi-plus-circle-fill"></i> Agregar
@@ -26,10 +45,30 @@
               </a>
             </div>
           </form>
+
         </div>
       </div>
-
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function () {
+    $("#id_logo").fileinput({
+      theme: "fas",
+      language: "es",
+      showUpload: true,  
+      dropZoneEnabled: true,
+      browseLabel: "Examinar",
+      removeLabel: "Quitar",
+      allowedFileExtensions: ["jpg", "jpeg", "png", "gif", "webp"],
+      maxFileSize: 2048,
+      msgPlaceholder: "Arrastre o clic en examinar",
+      showCancel: false,
+      showClose: false,
+      layoutTemplates: { main2: '{preview} {remove} {browse}' } // solo los botones que necesitas
+    });
+  });
+</script>
+
+
 {% endblock %}
