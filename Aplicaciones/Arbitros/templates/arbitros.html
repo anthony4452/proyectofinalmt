@@ -34,11 +34,11 @@
                             <td>{{ arbitro.nacionalidad }}</td>
                             <td>{{ arbitro.edad }}</td>
                             <td>{{ arbitro.experiencia }} años</td>
-                            <td>
-                                <a href="editarArbitro/{{ arbitro.id }}" class="btn btn-outline-warning">
+                            <td class="text-center">
+                                <a href="editarArbitro/{{ arbitro.id }}" class="btn btn-outline-warning me-2">
                                     <i class="fa fa-pen"></i> Editar
                                 </a>
-                                <a href="eliminarArbitro/{{ arbitro.id }}" onclick="return confirm('¿Estás seguro de eliminar este árbitro?')" class="btn btn-outline-danger">
+                                <a href="#" class="btn btn-outline-danger" onclick="confirmarEliminacion('{{ arbitro.id }}')">
                                     <i class="fa fa-trash"></i> Eliminar
                                 </a>
                             </td>
@@ -64,5 +64,24 @@
             }
         });
     });
+</script>
+
+<script>
+    function confirmarEliminacion(id) {
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¡Esta acción no se puede deshacer!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "eliminarArbitro/" + id + "/";
+            }
+        });
+    }
 </script>
 {% endblock %}

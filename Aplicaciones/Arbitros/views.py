@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Arbitro
 from .forms import ArbitroForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.contrib import messages
 # ✅ Verifica si el usuario es admin
 def es_admin(user):
     return hasattr(user, 'perfilusuario') and user.perfilusuario.rol == 'admin'
@@ -20,6 +20,7 @@ def nuevoArbitro(request):
         form = ArbitroForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Árbitro creado correctamente.')
             return redirect('/arbitros/')
     else:
         form = ArbitroForm()
@@ -33,6 +34,7 @@ def editarArbitro(request, id):
         form = ArbitroForm(request.POST, instance=arbitro)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Árbitro editado correctamente.')
             return redirect('/arbitros/')
     else:
         form = ArbitroForm(instance=arbitro)
@@ -43,4 +45,5 @@ def editarArbitro(request, id):
 def eliminarArbitro(request, id):
     arbitro = get_object_or_404(Arbitro, id=id)
     arbitro.delete()
+    messages.success(request, 'Árbitro eliminado correctamente.')
     return redirect('/arbitros/')
