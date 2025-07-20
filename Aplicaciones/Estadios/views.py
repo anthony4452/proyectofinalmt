@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Estadio
 from .forms import EstadioForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 # ✅ Función para verificar si el usuario es admin
@@ -23,7 +24,8 @@ def editarEstadio(request, id):
         form = EstadioForm(request.POST, instance=estadio)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            messages.success(request, 'Estadio editado correctamente.')
+            return redirect('/estadios/')
     else:
         form = EstadioForm(instance=estadio)
     return render(request, 'editarEstadio.html', {'form': form, 'estadio': estadio})
@@ -35,6 +37,7 @@ def nuevoEstadio(request):
         form = EstadioForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Estadio creado correctamente.')
             return redirect('/estadios/')
     else:
         form = EstadioForm()
@@ -45,4 +48,5 @@ def nuevoEstadio(request):
 def eliminarEstadio(request, id):
     estadio = get_object_or_404(Estadio, id=id)
     estadio.delete()
-    return redirect('/')
+    messages.success(request, 'Estadio eliminado correctamente.')
+    return redirect('/estadios/')

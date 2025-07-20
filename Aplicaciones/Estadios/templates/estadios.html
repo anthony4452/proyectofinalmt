@@ -36,7 +36,7 @@
                                 <a href="editarEstadio/{{ estadio.id }}" class="btn btn-outline-warning">
                                     <i class="fa fa-pen"></i> Editar
                                 </a>
-                                <a href="eliminarEstadio/{{ estadio.id }}" onclick="eliminarEstadio('{{ estadio.id }}')" class="btn btn-outline-danger">
+                                <a href="#" class="btn btn-outline-danger" onclick="confirmarEliminacion('{{ estadio.id }}')">
                                     <i class="fa fa-trash"></i> Eliminar
                                 </a>
                             </td>
@@ -63,4 +63,24 @@
         });
     });
 </script>
+
+<script>
+    function confirmarEliminacion(id) {
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¡Esta acción no se puede deshacer!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "eliminarEstadio/" + id + "/";
+            }
+        });
+    }
+</script>
+
 {% endblock %}
