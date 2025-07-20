@@ -8,7 +8,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <!-- Icono -->
-    <link rel="icon" href="{% static 'plantilla/soccer/images/logo_3.png' %}" />s
+    <link rel="icon" href="{% static 'plantilla/soccer/images/logo_3.png' %}" />
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
@@ -60,8 +60,99 @@
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/aos.css' %}" />
   <link rel="stylesheet" href="{% static 'plantilla/soccer/css/style.css' %}" />
   {% block extra_css %}{% endblock %}
+  
 </head>
+    <style>
 
+    body:not(.dark-mode) .footer-text {
+      color: #000000;
+    }
+    body:not(.dark-mode) .footer-link {
+      color: #000000;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    body.dark-mode .footer-text {
+      color: #f1f1f1;
+    }
+    body.dark-mode .footer-link {
+      color: #f1f1f1;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    body:not(.dark-mode) .menu-toggle-color {
+      color: #000000;
+    }
+    body.dark-mode .menu-toggle-color {
+      color: #f1f1f1;
+    }
+
+    body:not(.dark-mode) .titulo-hero {
+      color: #000000;
+    }
+    body.dark-mode .titulo-hero {
+      color: #ffffff;
+    }
+
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #f1f1f1 !important;
+    }
+    body:not(.dark-mode) {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+    }
+
+    .dark-mode .navbar,
+    .dark-mode header,
+    .dark-mode footer,
+    .dark-mode .site-navbar {
+      background-color: #1e1e1e !important;
+    }
+
+    .dark-mode .nav-link,
+    .dark-mode .footer-section a,
+    .dark-mode h1, 
+    .dark-mode h2, 
+    .dark-mode h3, 
+    .dark-mode h4, 
+    .dark-mode h5 {
+      color: #f1f1f1 !important;
+    }
+
+    .dark-mode .card, .dark-mode .form-control {
+      background-color: #1e1e1e !important;
+      color: #f1f1f1 !important;
+    }
+
+    .dark-mode input::placeholder,
+    .dark-mode textarea::placeholder {
+      color: #ccc !important;
+    }
+
+    .dark-mode .btn-outline-dark {
+      border-color: #f1f1f1;
+      color: #f1f1f1;
+    }
+
+    .dark-mode .btn-outline-dark:hover {
+      background-color: #f1f1f1;
+      color: #121212;
+    }
+
+    body:not(.dark-mode) .site-navbar,
+    body:not(.dark-mode) footer {
+      background-color: #ffffff !important;
+    }
+
+    body:not(.dark-mode) .nav-link,
+    body:not(.dark-mode) .footer-section a {
+      color: #000000 !important;
+    }
+      
+    </style>
 <body>
   <div class="site-wrap">
 
@@ -110,13 +201,18 @@
                     </li>
                   {% endif %}
                   <li><a href="{% url 'logout' %}" class="nav-link">Salir</a></li>
+                  <li>
+                    <button id="modo-btn" class="btn btn-sm btn-outline-dark rounded-pill ms-2">
+                      🌙 / ☀️
+                    </button>
+                  </li>
                 {% else %}
                   <li><a href="/" class="nav-link">Inicio</a></li>
                   <li><a href="{% url 'login' %}" class="nav-link">Iniciar sesión</a></li>
                 {% endif %}
               </ul>
             </nav>
-            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-white float-end">
+            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle float-end menu-toggle-color">
               <span class="icon-menu h3"></span>
             </a>
           </div>
@@ -141,37 +237,36 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer-section bg-dark text-white mt-5 pt-5 pb-3">
+  <footer class="footer-section bg-dark mt-5 pt-5 pb-3">
     <div class="container">
       <div class="row mb-4">
         <div class="col-md-6 col-lg-3">
-          <h5>Noticias</h5>
-          <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Noticias del Club</a></li>
-            <li><a href="#" class="text-white">Videos</a></li>
+          <h5 class="footer-text">Noticias</h5>
+          <ul class="list-unstyled footer-text">
+            <li><a href="#" class="footer-link">Noticias del Club</a></li>
+            <li><a href="#" class="footer-link">Videos</a></li>
           </ul>
         </div>
         <div class="col-md-6 col-lg-3 offset-lg-6">
-          <h5>Redes Sociales</h5>
-          <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Twitter</a></li>
-            <li><a href="#" class="text-white">Facebook</a></li>
-            <li><a href="#" class="text-white">Instagram</a></li>
-            <li><a href="#" class="text-white">YouTube</a></li>
+          <h5 class="footer-text">Redes Sociales</h5>
+          <ul class="list-unstyled footer-text">
+            <li><a href="#" class="footer-link">Twitter</a></li>
+            <li><a href="#" class="footer-link">Facebook</a></li>
+            <li><a href="#" class="footer-link">Instagram</a></li>
+            <li><a href="#" class="footer-link">YouTube</a></li>
           </ul>
         </div>
       </div>
-      <div class="text-center">
+      <div class="text-center footer-text">
         <p class="mb-0">
           Anthoo &copy;
           <script>document.write(new Date().getFullYear());</script> — Juegos de Fútbol |
           <i class="icon-heart" aria-hidden="true"></i> por
-          <a href="https://colorlib.com" target="_blank" class="text-white">Ingeniería en Sistemas</a>
+          <a href="https://colorlib.com" target="_blank" class="footer-link">Ingeniería en Sistemas</a>
         </p>
       </div>
     </div>
   </footer>
-
   <!-- JS Libraries -->
 
   <!-- jQuery -->
@@ -210,7 +305,7 @@
 
   {% block extra_js %}{% endblock %}
 
-      {% if messages %}
+    {% if messages %}
       {% for mensaje in messages%}
         <script>
           Swal.fire({
@@ -231,5 +326,19 @@
       }
     
     </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (localStorage.getItem("modo") === "oscuro") {
+        document.body.classList.add("dark-mode");
+      }
+
+      document.getElementById("modo-btn").addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("modo", document.body.classList.contains("dark-mode") ? "oscuro" : "claro");
+      });
+    });
+  </script>
+
 </body>
 </html>
