@@ -1,74 +1,127 @@
 {% extends "plantilla.html" %}
-
 {% block content %}
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
 
-      <!-- Tarjeta del formulario -->
-      <div class="card shadow-lg rounded-4 border-0">
-        <div class="card-header bg-danger text-white text-center rounded-top-4">
-          <h3 class="mb-0"><i class="bi bi-people-fill"></i> Agregar Nuevo Equipo</h3>
-        </div>
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-plus mb-4"> Nuevo Equipo</h1>
 
-        <div class="card-body">
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" id="frm_nuevo_equipo">
+      {% csrf_token %}
 
-            <div class="mb-3">
-              <label for="id_nombre" class="form-label">Nombre</label>
-              {{ form.nombre }}
-            </div>
-
-            <!-- Aquí va el campo logo con drag and drop -->
-            <div class="mb-3">
-              <label for="id_logo" class="form-label">Logo del equipo</label>
-              <input type="file" name="logo" id="id_logo">
-            </div>
-
-            <div class="mb-3">
-              <label for="id_fundacion" class="form-label">Fundación</label>
-              {{ form.fundacion }}
-            </div>
-
-            <div class="mb-3">
-              <label for="id_presidente" class="form-label">Presidente</label>
-              {{ form.presidente }}
-            </div>
-
-            <div class="d-flex justify-content-center gap-2 mt-4">
-              <button type="submit" class="btn btn-success">
-                <i class="bi bi-plus-circle-fill"></i> Agregar
-              </button>
-              <a href="/equipos/" class="btn btn-danger">
-                <i class="bi bi-arrow-left-circle-fill"></i> Cancelar
-              </a>
-            </div>
-          </form>
-
-        </div>
+      <div class="form-group mb-3">
+        <label for="nombre">Nombre</label>
+        <input class="form-control" type="text" name="nombre" id="nombre"
+               value="{{ form.nombre.value|default:'' }}" />
       </div>
-    </div>
+
+      <div class="form-group mb-3">
+        <label for="logo">Logo del equipo</label>
+        <input type="file" name="logo" id="logo" class="form-control" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="fundacion">Fundación</label>
+        <input class="form-control" type="date" name="fundacion" id="fundacion"
+               value="{{ form.fundacion.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="presidente">Presidente</label>
+        <input class="form-control" type="text" name="presidente" id="presidente"
+               value="{{ form.presidente.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mt-4">
+        <button class="btn btn-outline-success" type="submit">GUARDAR</button>
+        <a href="/equipos/" class="btn btn-outline-danger ml-2">
+          <i class="fa fa-chevron-circle-left"></i> Cancelar
+        </a>
+      </div>
+    </form>
   </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
 <script>
   $(document).ready(function () {
-    $("#id_logo").fileinput({
+
+    $.validator.addMethod("lettersonly", function (value, element) {
+      return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo letras y espacios");
+
+    $("#frm_nuevo_equipo").validate({
+      rules: {
+        nombre: {
+          required: true,
+          minlength: 4,
+          maxlength: 100,
+          lettersonly: true
+        },
+        logo: {
+          required: true,
+          extension: "jpg|jpeg|png|gif|webp"
+        },
+        fundacion: {
+          required: true,
+          date: true
+        },
+        presidente: {
+          required: true,
+          minlength: 4,
+          maxlength: 100,
+          lettersonly: true
+        }
+      },
+      messages: {
+        nombre: {
+          required: "Ingrese el nombre del equipo",
+          minlength: "Debe tener al menos 4 caracteres",
+          maxlength: "No debe superar los 100 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        },
+        logo: {
+          required: "Debe subir el logo del equipo",
+          extension: "Formatos permitidos: jpg, jpeg, png, gif, webp"
+        },
+        fundacion: {
+          required: "Ingrese la fecha de fundación"
+        },
+        presidente: {
+          required: "Ingrese el nombre del presidente",
+          minlength: "Debe tener al menos 4caracteres",
+          maxlength: "No debe superar los 100 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        }
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('text-danger mt-1');
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+
+    // Plugin fileinput para el campo logo
+    $("#logo").fileinput({
       theme: "fas",
       language: "es",
-      showUpload: true,  
+      showUpload: false,
       dropZoneEnabled: true,
       browseLabel: "Examinar",
       removeLabel: "Quitar",
       allowedFileExtensions: ["jpg", "jpeg", "png", "gif", "webp"],
       maxFileSize: 2048,
-      msgPlaceholder: "Arrastre o clic en examinar",
+      msgPlaceholder: "Arrastre o haga clic para examinar",
       showCancel: false,
       showClose: false,
-      layoutTemplates: { main2: '{preview} {remove} {browse}' } // solo los botones que necesitas
+      layoutTemplates: { main2: '{preview} {remove} {browse}' }
     });
   });
 </script>
-
-
 {% endblock %}

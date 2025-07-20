@@ -1,35 +1,113 @@
-{% extends "plantilla.html" %}
-
+{% extends "./plantilla.html" %}
 {% block content %}
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
 
-      <!-- Tarjeta del formulario -->
-      <div class="card shadow-lg rounded-4 border-0">
-        <div class="card-header bg-primary text-white text-center rounded-top-4">
-          <h3 class="mb-0"><i class="bi bi-building-fill-add"></i> Agregar Nuevo Estadio</h3>
-        </div>
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-plus mb-4"> Nuevo Estadio</h1>
 
-        <div class="card-body">
-          <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+    <form method="post" id="frm_nuevo_estadio" enctype="multipart/form-data">
+      {% csrf_token %}
 
-            <!-- Botones -->
-            <div class="d-flex justify-content-center gap-2 mt-4">
-              <button type="submit" class="btn btn-success">
-                <i class="bi bi-plus-circle-fill"></i> Agregar
-              </button>
-              <a href="/estadios/" class="btn btn-danger me-2">
-                <i class="bi bi-eye-fill"></i> Cancelar
-              </a>
-            </div>
-          </form>
-        </div>
+      <div class="form-group mb-3">
+        <label for="nombre">Nombre</label>
+        <input class="form-control" type="text" name="nombre" id="nombre" value="{{ form.nombre.value|default:'' }}" />
       </div>
-      
-    </div>
+
+      <div class="form-group mb-3">
+        <label for="direccion">Dirección</label>
+        <input class="form-control" type="text" name="direccion" id="direccion" value="{{ form.direccion.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="capacidad">Capacidad</label>
+        <input class="form-control" type="number" name="capacidad" id="capacidad" value="{{ form.capacidad.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="ciudad">Ciudad</label>
+        <input class="form-control" type="text" name="ciudad" id="ciudad" value="{{ form.ciudad.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mt-4">
+        <button class="btn btn-outline-success" type="submit">GUARDAR</button>
+        <a href="/estadios/" class="btn btn-outline-danger ml-2">
+          <i class="fa fa-chevron-circle-left"></i> Cancelar
+        </a>
+      </div>
+    </form>
   </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    // Método para solo letras y espacios
+    $.validator.addMethod("lettersonly", function (value, element) {
+      return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo se permiten letras y espacios");
+
+    $("#frm_nuevo_estadio").validate({
+      rules: {
+        nombre: {
+          required: true,
+          minlength: 3,
+          maxlength: 100,
+          lettersonly: true
+        },
+        direccion: {
+          required: true,
+          minlength: 5,
+          maxlength: 150
+        },
+        capacidad: {
+          required: true,
+          digits: true,
+          min: 100
+        },
+        ciudad: {
+          required: true,
+          minlength: 2,
+          maxlength: 50,
+          lettersonly: true
+        }
+      },
+      messages: {
+        nombre: {
+          required: "Ingrese el nombre del estadio",
+          minlength: "Debe tener al menos 3 caracteres",
+          maxlength: "No debe superar los 100 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        },
+        direccion: {
+          required: "Ingrese la dirección",
+          minlength: "Debe tener al menos 5 caracteres",
+          maxlength: "No debe superar los 150 caracteres"
+        },
+        capacidad: {
+          required: "Ingrese la capacidad",
+          digits: "Solo números",
+          min: "Debe ser al menos 100 personas"
+        },
+        ciudad: {
+          required: "Ingrese la ciudad",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 50 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        }
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('text-danger mt-1');
+        error.insertAfter(element); // 🔥 Mensaje debajo del campo
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      }
+    });
+  });
+</script>
 {% endblock %}

@@ -11,54 +11,124 @@
         </div>
 
         <div class="card-body">
-          <form method="post" enctype="multipart/form-data">
+          <form method="post" enctype="multipart/form-data" id="frm_editar_equipo">
             {% csrf_token %}
 
-            <div class="mb-3">
-              <label for="id_nombre" class="form-label">Nombre</label>
-              {{ form.nombre }}
+            <div class="form-group mb-3">
+              <label for="nombre">Nombre</label>
+              <input class="form-control" type="text" name="nombre" id="nombre"
+                     value="{{ form.nombre.value|default:'' }}" />
             </div>
 
             {% if equipo.logo %}
-                <label class="form-label">Logo actual</label><br>
-                <img src="{{ equipo.logo.url }}" alt="Logo actual" class="img-thumbnail" style="height: 200px;">
+            <div class="form-group mb-3">
+              <label>Logo actual</label><br>
+              <img src="{{ equipo.logo.url }}" alt="Logo actual" class="img-thumbnail" style="height: 200px;">
+            </div>
             {% endif %}
 
-            <div class="mb-3">
-              <label for="id_logo" class="form-label">Actualizar Logo</label>
-              <input type="file" name="logo" id="id_logo">
+            <div class="form-group mb-3">
+              <label for="logo">Actualizar Logo</label>
+              <input type="file" name="logo" id="logo" class="form-control" />
             </div>
 
-            <div class="mb-3">
-              <label for="id_fundacion" class="form-label">Fundación</label>
-              {{ form.fundacion }}
+            <div class="form-group mb-3">
+              <label for="fundacion">Fundación</label>
+              <input class="form-control" type="date" name="fundacion" id="fundacion"
+                     value="{{ form.fundacion.value|default:'' }}" />
             </div>
 
-            <div class="mb-3">
-              <label for="id_presidente" class="form-label">Presidente</label>
-              {{ form.presidente }}
+            <div class="form-group mb-3">
+              <label for="presidente">Presidente</label>
+              <input class="form-control" type="text" name="presidente" id="presidente"
+                     value="{{ form.presidente.value|default:'' }}" />
             </div>
 
-            <div class="d-flex justify-content-center gap-2 mt-4">
-              <button type="submit" class="btn btn-primary">
+            <div class="form-group mt-4">
+              <button class="btn btn-primary" type="submit">
                 <i class="bi bi-save-fill"></i> Guardar Cambios
               </button>
-              <a href="/equipos/" class="btn btn-secondary">
+              <a href="/equipos/" class="btn btn-secondary ml-2">
                 <i class="bi bi-arrow-left-circle-fill"></i> Cancelar
               </a>
             </div>
+
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
 <script>
   $(document).ready(function () {
-    $("#id_logo").fileinput({
+    // Método personalizado solo letras y espacios
+    $.validator.addMethod("lettersonly", function (value, element) {
+      return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo letras y espacios");
+
+    // Validación del formulario
+    $("#frm_editar_equipo").validate({
+      rules: {
+        nombre: {
+          required: true,
+          minlength: 4,
+          maxlength: 10,
+          lettersonly: true
+        },
+        logo: {
+          extension: "jpg|jpeg|png|gif|webp"
+        },
+        fundacion: {
+          required: true,
+          date: true
+        },
+        presidente: {
+          required: true,
+          minlength: 4,
+          maxlength: 10,
+          lettersonly: true
+        }
+      },
+      messages: {
+        nombre: {
+          required: "Ingrese el nombre del equipo",
+          minlength: "Debe tener al menos 4 caracteres",
+          maxlength: "No debe superar los 10 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        },
+        logo: {
+          extension: "Formatos permitidos: jpg, jpeg, png, gif, webp"
+        },
+        fundacion: {
+          required: "Ingrese la fecha de fundación"
+        },
+        presidente: {
+          required: "Ingrese el nombre del presidente",
+          minlength: "Debe tener al menos 4 caracteres",
+          maxlength: "No debe superar los 10 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        }
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('text-danger mt-1');
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      }
+    });
+
+    // Plugin para input de logo
+    $("#logo").fileinput({
       theme: "fas",
       language: "es",
-      showUpload: true,
+      showUpload: false,
       dropZoneEnabled: true,
       browseLabel: "Examinar",
       removeLabel: "Quitar",
@@ -71,5 +141,4 @@
     });
   });
 </script>
-
 {% endblock %}

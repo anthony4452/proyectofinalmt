@@ -1,11 +1,110 @@
 {% extends "./plantilla.html" %}
 
 {% block content %}
-<h1>Editar Estadio</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <a href="estadio" class="btn btn-secondary">Cancelar</a>
-</form>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-header bg-warning text-white text-center rounded-top-4">
+          <h3 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Estadio</h3>
+        </div>
+
+        <div class="card-body">
+          <form method="post" id="frm_editar_estadio">
+            {% csrf_token %}
+
+            <div class="form-group mb-3">
+              <label for="nombre">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" 
+                     value="{{ form.nombre.value|default:'' }}">
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="direccion">Dirección</label>
+              <input type="text" class="form-control" id="direccion" name="direccion" 
+                     value="{{ form.direccion.value|default:'' }}">
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="capacidad">Capacidad</label>
+              <input type="number" class="form-control" id="capacidad" name="capacidad" 
+                     value="{{ form.capacidad.value|default:'' }}">
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="ciudad">Ciudad</label>
+              <input type="text" class="form-control" id="ciudad" name="ciudad" 
+                     value="{{ form.ciudad.value|default:'' }}">
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save-fill"></i> Guardar Cambios
+              </button>
+              <a href="/estadios/" class="btn btn-secondary">
+                <i class="bi bi-x-circle-fill"></i> Cancelar
+              </a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    $("#frm_editar_estadio").validate({
+      rules: {
+        nombre: { required: true, minlength: 4, maxlength: 20, lettersonly: true },
+        direccion: { required: true, minlength: 5, maxlength: 20 },
+        capacidad: { required: true, digits: true,maxlength: 5000, min: 100 },
+        ciudad: { required: true, minlength: 2, maxlength: 20, lettersonly: true }
+      },
+      messages: {
+        nombre: {
+          required: "Ingrese el nombre del estadio",
+          minlength: "Debe tener al menos 4 caracteres",
+          maxlength: "No debe superar los 20 caracteres",
+          lettersonly: "Solo letras y espacios"
+        },
+        direccion: {
+          required: "Ingrese la dirección",
+          minlength: "Debe tener al menos 5 caracteres",
+          maxlength: "No debe superar los 20 caracteres"
+        },
+        capacidad: {
+          required: "Ingrese la capacidad",
+          digits: "Solo números",
+          maxlength: "No debe superar los 5000 personas",
+          min: "Debe ser al menos 100 personas"
+        },
+        ciudad: {
+          required: "Ingrese la ciudad",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 20 caracteres",
+          lettersonly: "Solo letras y espacios"
+        }
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('text-danger mt-1');
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      }
+    });
+
+    $.validator.addMethod("lettersonly", function(value, element) {
+      return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo letras y espacios");
+  });
+</script>
 {% endblock %}

@@ -1,35 +1,133 @@
-{% extends "plantilla.html" %}
-
+{% extends "./plantilla.html" %}
 {% block content %}
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
 
-      <!-- Tarjeta del formulario -->
-      <div class="card shadow-lg rounded-4 border-0">
-        <div class="card-header bg-danger text-white text-center rounded-top-4">
-          <h3 class="mb-0"><i class="bi bi-person-plus-fill"></i> Agregar Nuevo Árbitro</h3>
-        </div>
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-plus mb-4"> Nuevo Árbitro</h1>
 
-        <div class="card-body">
-          <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+    <form method="post" id="frm_nuevo_arbitro" enctype="multipart/form-data">
+      {% csrf_token %}
 
-            <!-- Botones -->
-            <div class="d-flex justify-content-center gap-2 mt-4">
-              <button type="submit" class="btn btn-success">
-                <i class="bi bi-plus-circle-fill"></i> Agregar
-              </button>
-              <a href="/arbitros/" class="btn btn-danger me-2">
-                <i class="bi bi-eye-fill"></i> Cancelar
-              </a>
-            </div>
-          </form>
-        </div>
+      <div class="form-group mb-3">
+        <label for="nombre">Nombre</label>
+        <input class="form-control" type="text" name="nombre" id="nombre" value="{{ form.nombre.value|default:'' }}" />
       </div>
 
-    </div>
+      <div class="form-group mb-3">
+        <label for="cedula">Cédula</label>
+        <input class="form-control" type="text" name="cedula" id="cedula" value="{{ form.cedula.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="nacionalidad">Nacionalidad</label>
+        <input class="form-control" type="text" name="nacionalidad" id="nacionalidad" value="{{ form.nacionalidad.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="edad">Edad</label>
+        <input class="form-control" type="number" name="edad" id="edad" value="{{ form.edad.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="experiencia">Experiencia (años)</label>
+        <input class="form-control" type="number" name="experiencia" id="experiencia" value="{{ form.experiencia.value|default:'' }}" />
+      </div>
+
+      <div class="form-group mt-4">
+        <button class="btn btn-outline-success" type="submit">GUARDAR</button>
+        <a href="/arbitros/" class="btn btn-outline-danger ml-2">
+          <i class="fa fa-chevron-circle-left"></i> Cancelar
+        </a>
+      </div>
+    </form>
   </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    $.validator.addMethod("lettersonly", function (value, element) {
+      return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+    }, "Solo letras y espacios");
+
+    $("#frm_nuevo_arbitro").validate({
+      rules: {
+        nombre: {
+          required: true,
+          minlength: 2,
+          maxlength: 100,
+          lettersonly: true
+        },
+        cedula: {
+          required: true,
+          digits: true,
+          minlength: 10,
+          maxlength: 10
+        },
+        nacionalidad: {
+          required: true,
+          minlength: 2,
+          maxlength: 50,
+          lettersonly: true
+        },
+        edad: {
+          required: true,
+          digits: true,
+          min: 18,
+          max: 70
+        },
+        experiencia: {
+          required: true,
+          digits: true,
+          min: 2,
+          max: 30
+        }
+      },
+      messages: {
+        nombre: {
+          required: "Ingrese el nombre",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 100 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        },
+        cedula: {
+          required: "Ingrese la cédula",
+          digits: "Solo números",
+          minlength: "Debe tener al menos 10 dígitos",
+          maxlength: "No debe superar los 10 dígitos"
+        },
+        nacionalidad: {
+          required: "Ingrese la nacionalidad",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 50 caracteres",
+          lettersonly: "Solo se permiten letras y espacios"
+        },
+        edad: {
+          required: "Ingrese la edad",
+          digits: "Solo números",
+          min: "La edad mínima es 18 años",
+          max: "La edad máxima es 70 años"
+        },
+        experiencia: {
+          required: "Ingrese la experiencia",
+          digits: "Solo números",
+          min: "La experiencia mínima es 2 años",
+          max: "La experiencia máxima es 30 años"
+        }
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('text-danger mt-1');
+        error.insertAfter(element);  // 🔥 Mensaje debajo del input
+      },
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  });
+</script>
 {% endblock %}
