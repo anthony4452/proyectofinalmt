@@ -2,9 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Temporada
 from django.http import FileResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+def es_admin(user):
+    return hasattr(user, 'perfilusuario') and user.perfilusuario.rol == 'admin'
 
 
+@login_required
+@user_passes_test(es_admin)
 def ver_pdf(request, id):
     reglamento = get_object_or_404(Temporada, pk=id)
     return FileResponse(reglamento.reglamento.open(), content_type='application/pdf')
@@ -12,14 +17,20 @@ def ver_pdf(request, id):
 
 
 @login_required
+@user_passes_test(es_admin)
 def temporadas(request):
     temporadas = Temporada.objects.all()
     return render(request, 'temporadas.html', {'temporadas': temporadas})
 
 
+@login_required
+@user_passes_test(es_admin)
 def nuevaTemporada(request):
     return render(request, 'nuevaTemporada.html')
 
+
+@login_required
+@user_passes_test(es_admin)
 def guardarTemporada(request):
     if request.method == "POST":
         nombreliga = request.POST.get("nombreliga")
@@ -47,10 +58,14 @@ def guardarTemporada(request):
         return redirect('/temporadas/nuevaTemporada/')
     
 
+@login_required
+@user_passes_test(es_admin)
 def editarTemporada(request, id):
     editarTemporada = Temporada.objects.get(pk=id)
     return render(request, 'editarTemporada.html', {'temporada': editarTemporada})
 
+@login_required
+@user_passes_test(es_admin)
 def guardarEdicionTemporada(request, id):
     if request.method == 'POST':
         nombreliga = request.POST.get('nombreliga')
@@ -78,6 +93,8 @@ def guardarEdicionTemporada(request, id):
         return redirect('/temporadas')
 
 
+@login_required
+@user_passes_test(es_admin)
 def eliminarTemporada(request, id):
     temporada = get_object_or_404(Temporada, pk=id)
     temporada.delete()
