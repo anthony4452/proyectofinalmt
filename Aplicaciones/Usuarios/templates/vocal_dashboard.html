@@ -31,19 +31,22 @@
       </div>
     </div>
 
-    
-      <!-- Tabla de Posiciones -->
+    <!-- Tabla de Posiciones -->
     <div class="col-12 col-md-6 col-lg-4">
-      <div class="card shadow-sm border-0 h-100">
+    <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
-          <h5 class="card-title mb-3">Posiciones</h5>
-          <a href="{% url 'ver_posiciones' temporada_id %}" class="btn btn-outline-info me-2" title="">
+        <h5 class="card-title mb-3">Posiciones</h5>
+        {% if temporada_id %}
+            <a href="{% url 'ver_posiciones' temporada_id %}" class="btn btn-outline-info me-2" title="Ver Posiciones">
             <i class="bi bi-eye-fill"></i> Ver
-          </a>
-
+            </a>
+        {% else %}
+            <span class="text-muted">No hay temporada activa</span>
+        {% endif %}
         </div>
-      </div>
     </div>
+    </div>
+
   
     <!-- Fechas -->
     <div class="col-12 col-md-6 col-lg-4">

@@ -6,6 +6,11 @@ from .models import PerfilUsuario
 from django.contrib.auth.models import User
 from Aplicaciones.Temporadas.models import Temporada
 
+from django.utils import timezone
+
+def get_temporada_activa():
+    hoy = timezone.now().date()
+    return Temporada.objects.filter(fecha_inicio__lte=hoy, fecha_fin__gte=hoy).first()
 
 
 def login_view(request):
@@ -75,7 +80,7 @@ def registro_view(request):
 def admin_dashboard(request):
     rol = request.user.perfilusuario.rol
     
-    temporada = Temporada.objects.filter(activa=True).first()
+    temporada = get_temporada_activa()
     
     return render(request, 'admin_dashboard.html', {
         'rol': rol,
@@ -84,7 +89,7 @@ def admin_dashboard(request):
 @rol_requerido('vocal')
 def vocal_dashboard(request):
     rol = request.user.perfilusuario.rol
-    temporada = Temporada.objects.filter(activa=True).first()
+    temporada = get_temporada_activa()
 
 
     return render(request, 'vocal_dashboard.html', {
