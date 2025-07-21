@@ -75,7 +75,7 @@ def registro_view(request):
 def admin_dashboard(request):
     rol = request.user.perfilusuario.rol
     
-    temporada = Temporada.objects.last()
+    temporada = Temporada.objects.filter(activa=True).first()
     
     return render(request, 'admin_dashboard.html', {
         'rol': rol,
@@ -84,7 +84,7 @@ def admin_dashboard(request):
 @rol_requerido('vocal')
 def vocal_dashboard(request):
     rol = request.user.perfilusuario.rol
-    temporada = Temporada.objects.last()
+    temporada = Temporada.objects.filter(activa=True).first()
 
 
     return render(request, 'vocal_dashboard.html', {
