@@ -76,10 +76,10 @@
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
           <h5 class="card-title mb-3">Jugadores</h5>
-          <a href="/arbitros/" class="btn btn-outline-success me-2" title="Ver Árbitros">
+          <a href="/jugadores/" class="btn btn-outline-success me-2" title="Ver Árbitros">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/arbitros/nuevoArbitro" class="btn btn-success" title="Crear Árbitro">
+          <a href="/jugadores/nuevo" class="btn btn-success" title="Crear Árbitro">
             <i class="bi bi-plus-circle-fill"></i> Crear
           </a>
         </div>
@@ -91,11 +91,10 @@
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
           <h5 class="card-title mb-3">Trazpasos</h5>
-          <a href="/arbitros/" class="btn btn-outline-warning me-2" title="Ver Árbitros">
+          <a href="{% url 'traspasos:listar' %}" class="btn btn-outline-warning me-2" title="Ver Traspasos">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/arbitros/nuevoArbitro" class="btn btn-warning" title="Crear Árbitro">
-            <i class="bi bi-plus-circle-fill"></i> Crear
+ 
           </a>
         </div>
       </div>
@@ -106,12 +105,10 @@
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
           <h5 class="card-title mb-3">Posiciones</h5>
-          <a href="/arbitros/" class="btn btn-outline-info me-2" title="Ver Árbitros">
+          <a href="{% url 'ver_posiciones' temporada_id %}" class="btn btn-outline-info me-2" title="">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/arbitros/nuevoArbitro" class="btn btn-info" title="Crear Árbitro">
-            <i class="bi bi-plus-circle-fill"></i> Crear
-          </a>
+
         </div>
       </div>
     </div>
@@ -121,10 +118,10 @@
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
           <h5 class="card-title mb-3">Fechas</h5>
-          <a href="/arbitros/" class="btn btn-outline-success me-2" title="Ver Árbitros">
+          <a href="/fechas/" class="btn btn-outline-success me-2" title="Ver Árbitros">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/arbitros/nuevoArbitro" class="btn btn-success" title="Crear Árbitro">
+          <a href="/fechas/nueva" class="btn btn-success" title="Crear Árbitro">
             <i class="bi bi-plus-circle-fill"></i> Crear
           </a>
         </div>
@@ -136,7 +133,7 @@
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
           <h5 class="card-title mb-3">Partidos</h5>
-          <a href="/temporadas/" class="btn btn-outline-warning me-2" title="Ver Temporadas">
+          <a href="/partidos/" class="btn btn-outline-warning me-2" title="Ver Temporadas">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
           <a href="/temporadas/nuevaTemporada" class="btn btn-warning" title="Crear Temporada">
@@ -147,46 +144,70 @@
     </div>
 
     <!-- Carnets -->
+<div class="col-12 col-md-6 col-lg-4">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-body text-center">
+      <h5 class="card-title mb-3">Carnets</h5>
+      <a href="{% url 'carnets:jugcarnet' %}" class="btn btn-outline-info me-2" title="">
+        <i class="bi bi-eye-fill"></i> Ver
+      </a>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Correos -->
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
-          <h5 class="card-title mb-3">Carnets</h5>
-          <a href="/temporadas/" class="btn btn-outline-info me-2" title="Ver Temporadas">
+          <h5 class="card-title mb-3">Enviar Correos</h5>
+          <a href="{% url 'correos_list' %}" class="btn btn-outline-success me-2" title="Ver Correos">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/temporadas/nuevaTemporada" class="btn btn-info" title="Crear Temporada">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Incripción de Jugadores -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title mb-3">Inscripción de Jugadores</h5>
+          <a href="{% url 'lista_inscripciones' %}" class="btn btn-outline-success me-2" title="Ver Inscripción">
+            <i class="bi bi-eye-fill"></i> Ver
+          </a>
+          <a href="{% url 'nueva_inscripcion' %}" class="btn btn-success" title="Crear Inscripción">
             <i class="bi bi-plus-circle-fill"></i> Crear
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Vocales -->
+    <!-- Inscipción de Equipos -->
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
-          <h5 class="card-title mb-3">Vocales</h5>
-          <a href="/temporadas/" class="btn btn-outline-success me-2" title="Ver Temporadas">
+          <h5 class="card-title mb-3">Inscipción de Equipos</h5>
+          <a href="{% url 'lista_participaciones' %}" class="btn btn-outline-success me-2" title="Ver Inscripción">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/temporadas/nuevaTemporada" class="btn btn-success" title="Crear Temporada">
+          <a href="{% url 'nueva_participacion' %}" class="btn btn-success" title="Crear Inscripción">
             <i class="bi bi-plus-circle-fill"></i> Crear
           </a>
         </div>
       </div>
     </div>
-  
-    <!-- Administradores -->
+
+    
+    <!-- Users -->
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm border-0 h-100">
         <div class="card-body text-center">
-          <h5 class="card-title mb-3">Administradores</h5>
-          <a href="/temporadas/" class="btn btn-outline-warning me-2" title="Ver Temporadas">
+          <h5 class="card-title mb-3">Users</h5>
+          <a href="{% url 'usuarios_list' %}" class="btn btn-outline-warning me-2" title="Ver Users">
             <i class="bi bi-eye-fill"></i> Ver
           </a>
-          <a href="/temporadas/nuevaTemporada" class="btn btn-warning" title="Crear Temporada">
-            <i class="bi bi-plus-circle-fill"></i> Crear
-          </a>
+
         </div>
       </div>
     </div>

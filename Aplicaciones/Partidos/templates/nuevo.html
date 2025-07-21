@@ -1,0 +1,101 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="row col-md-8 justify-content-center mt-5">
+  <div class="bg-light p-4 rounded shadow">
+    <h2 class="mb-4 text-center">{{ partido|default_if_none:"Nuevo Partido" }}</h2>
+    <form method="POST" id="frm_partido" action="{% if partido %}{% url 'guardar_edicion_partido' partido.id %}{% else %}{% url 'guardar_partido' %}{% endif %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="fecha" class="form-label">Fecha</label>
+        <select name="fecha" id="fecha" class="form-select" required>
+          <option value="">Seleccione una fecha</option>
+          {% for f in fechas %}
+          <option value="{{ f.id }}" {% if partido and partido.fecha.id == f.id %}selected{% endif %}>
+            Fecha {{ f.numero }} - {{ f.temporada.nombreliga }} {{ f.temporada.año }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="equipo_local" class="form-label">Equipo Local</label>
+        <select name="equipo_local" id="equipo_local" class="form-select" required>
+          <option value="">Seleccione equipo local</option>
+          {% for e in equipos %}
+          <option value="{{ e.id }}" {% if partido and partido.equipo_local.id == e.id %}selected{% endif %}>{{ e.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="equipo_visitante" class="form-label">Equipo Visitante</label>
+        <select name="equipo_visitante" id="equipo_visitante" class="form-select" required>
+          <option value="">Seleccione equipo visitante</option>
+          {% for e in equipos %}
+          <option value="{{ e.id }}" {% if partido and partido.equipo_visitante.id == e.id %}selected{% endif %}>{{ e.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="goles_local" class="form-label">Goles Local</label>
+        <input type="number" min="0" name="goles_local" id="goles_local" class="form-control" value="{{ partido.goles_local|default_if_none:'' }}" />
+      </div>
+
+      <div class="mb-3">
+        <label for="goles_visitante" class="form-label">Goles Visitante</label>
+        <input type="number" min="0" name="goles_visitante" id="goles_visitante" class="form-control" value="{{ partido.goles_visitante|default_if_none:'' }}" />
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="on" id="jugado" name="jugado" {% if partido and partido.jugado %}checked{% endif %}>
+        <label class="form-check-label" for="jugado">
+          Partido Jugado
+        </label>
+      </div>
+
+      <div class="d-flex justify-content-center gap-2 mt-4">
+        <button type="submit" class="btn btn-success">
+          <i class="fa fa-save"></i> Guardar
+        </button>
+        <a href="{% url 'lista_partidos' %}" class="btn btn-danger">
+          <i class="fa fa-times-circle"></i> Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $('#frm_partido').validate({
+      rules: {
+        fecha: { required: true },
+        equipo_local: { required: true },
+        equipo_visitante: { required: true },
+        goles_local: { digits: true, min: 0 },
+        goles_visitante: { digits: true, min: 0 }
+      },
+      messages: {
+        fecha: "Seleccione una fecha",
+        equipo_local: "Seleccione el equipo local",
+        equipo_visitante: "Seleccione el equipo visitante",
+        goles_local: {
+          digits: "Solo números enteros",
+          min: "No puede ser negativo"
+        },
+        goles_visitante: {
+          digits: "Solo números enteros",
+          min: "No puede ser negativo"
+        }
+      },
+      errorClass: 'text-danger mt-1',
+      highlight: function(e) { $(e).addClass('is-invalid'); },
+      unhighlight: function(e) { $(e).removeClass('is-invalid'); }
+    });
+  });
+</script>
+{% endblock %}

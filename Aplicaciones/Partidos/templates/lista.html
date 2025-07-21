@@ -1,0 +1,96 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Partidos</h2>
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <a href="{% url 'nuevo_partido' %}" class="btn btn-success">
+      <i class="fa fa-plus"></i> Nuevo Partido
+    </a>
+  </div>
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <a href="{% url 'ver_posiciones' temporada.id %}" class="btn btn-warning">
+      <i class="fa fa-plus"></i> Tabla de Posiciones
+    </a>
+  </div>
+  <div class="table-responsive shadow-sm rounded">
+    <table id="tabla-partidos" class="table table-hover table-bordered" style="min-width: 900px;">
+      <thead class="table-primary text-center align-middle">
+        <tr>
+          <th>Fecha</th>
+          <th>Temporada</th>
+          <th>Local</th>
+          <th>Visitante</th>
+          <th>Goles Local</th>
+          <th>Goles Visitante</th>
+          <th>Jugado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in partidos %}
+        <tr class="align-middle text-center">
+          <td>Fecha {{ p.fecha.numero }}</td>
+          <td>{{ p.fecha.temporada }}</td>
+          <td>{{ p.equipo_local.nombre }}</td>
+          <td>{{ p.equipo_visitante.nombre }}</td>
+          <td>{{ p.goles_local|default:"-" }}</td>
+          <td>{{ p.goles_visitante|default:"-" }}</td>
+          <td>{% if p.jugado %}<span class="badge bg-success">Sí</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+          <td>
+            <a href="{% url 'editar_partido' p.id %}" class="btn btn-sm btn-warning me-2" title="Editar">
+              <i class="fa fa-edit"></i> Editar
+            </a>
+            <a href="#" onclick="eliminarPartido('{{ p.id }}')" class="btn btn-sm btn-outline-danger" title="Eliminar">
+              <i class="fa fa-trash"></i> Eliminar
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center text-muted">No hay partidos registrados.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+          <div class="d-flex justify-content-start mt-3">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">
+                <i class="fa fa-arrow-left"></i> Volver
+            </a>
+        </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $('#tabla-partidos').DataTable({
+      buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
+      dom: 'Bfrtip',
+      language: { url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json' },
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      responsive: true,
+      columnDefs: [{ orderable: false, targets: 7 }]
+    });
+  });
+
+  function eliminarPartido(id) {
+    event.preventDefault();
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = `/partidos/eliminar/${id}/`;
+      }
+    });
+  }
+</script>
+{% endblock %}

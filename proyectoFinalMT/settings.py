@@ -10,7 +10,7 @@ LOGIN_REDIRECT_URL = '/admin_dashboard/'
 
 # Seguridad
 SECRET_KEY = os.getenv('SECRET_KEY', 'clave-secreta-local')
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # Aplicaciones
@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'Aplicaciones.Arbitros',
     'Aplicaciones.Temporadas',
     'Aplicaciones.Traspasos',
+    'Aplicaciones.Fechas',
+    'Aplicaciones.Correos',
+    'Aplicaciones.Users',  
 ]
 
 # Middleware
@@ -66,13 +69,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'proyectoFinalMT.wsgi.application'
 
 # Base de datos con DATABASE_URL
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+if DEBUG:
+    # Base de datos local (PostgreSQL)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'carnetdb',
+            'USER': 'postgres',
+            'PASSWORD': 'anthoo',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
+else:
+    # Railway o producción con DATABASE_URL
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+
 
 # Validación de contraseñas
 AUTH_PASSWORD_VALIDATORS = [
@@ -101,6 +119,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'proyectoFinalMT', 'media')
 # ID predeterminado
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = ['https://ilyanthoo.up.railway.app']
+
+# Seguridad de cookies según entorno
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
+# En producción con dominio HTTPS
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['https://ilyanthoo.up.railway.app']
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'catotantony@gmail.com'  # Tu correo electrónico
+EMAIL_HOST_PASSWORD = 'mpbw oesw wcua ztis'

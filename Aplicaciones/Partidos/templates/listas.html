@@ -1,0 +1,62 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Tabla de Posiciones - Temporada {{ temporada.año }} {{ temporada.nombreliga }}</h2>
+  <div class="table-responsive shadow-sm rounded">
+    <table id="tabla-posiciones" class="table table-hover table-bordered" style="min-width: 900px;">
+      <thead class="table-primary text-center align-middle">
+        <tr>
+          <th>#</th>
+          <th>Equipo</th>
+          <th>PJ</th>
+          <th>G</th>
+          <th>E</th>
+          <th>P</th>
+          <th>GF</th>
+          <th>GC</th>
+          <th>DG</th>
+          <th>Puntos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pos in posiciones %}
+        <tr class="align-middle text-center">
+          <td>{{ forloop.counter }}</td>
+          <td class="text-start">{{ pos.equipo.nombre }}</td>
+          <td>{{ pos.pj }}</td>
+          <td>{{ pos.ganados }}</td>
+          <td>{{ pos.empatados }}</td>
+          <td>{{ pos.perdidos }}</td>
+          <td>{{ pos.goles_favor }}</td>
+          <td>{{ pos.goles_contra }}</td>
+          <td>{{ pos.diferencia }}</td>
+          <td>{{ pos.puntos }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="10" class="text-center text-muted">No hay posiciones para esta temporada.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $('#tabla-posiciones').DataTable({
+      buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
+      dom: 'Bfrtip',
+      language: { url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json' },
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      responsive: true,
+      ordering: true,
+      order: [[9, 'desc'], [8, 'desc'], [6, 'desc']] // ordenar por puntos, diferencia y goles a favor
+    });
+  });
+</script>
+{% endblock %}

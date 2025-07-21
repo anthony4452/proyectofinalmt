@@ -1,0 +1,53 @@
+{% extends './plantilla.html' %}
+{% block content %}
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-plus mb-4">Nueva Participación</h1>
+
+    <form method="post" action="{% url 'guardar_participacion' %}" id="frmNuevaParticipacion">
+      {% csrf_token %}
+      <div class="form-group mb-3">
+        <label for="equipo">Equipo</label>
+        <select name="equipo" id="equipo" class="form-control">
+          <option value="">Seleccione...</option>
+          {% for e in equipos %}
+          <option value="{{ e.id }}">{{ e.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="temporada">Temporada</label>
+        <select name="temporada" id="temporada" class="form-control">
+          <option value="">Seleccione...</option>
+          {% for t in temporadas %}
+          <option value="{{ t.id }}">{{ t.nombreliga }} - {{ t.nombretorneo }} - {{ t.año }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group mt-4 d-flex gap-2 justify-content-center">
+        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+        <a href="{% url 'lista_participaciones' %}" class="btn btn-danger">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $('#frmNuevaParticipacion').validate({
+      rules: {
+        equipo: { required: true },
+        temporada: { required: true }
+      },
+      messages: {
+        equipo: { required: "Seleccione un equipo" },
+        temporada: { required: "Seleccione una temporada" }
+      }
+    });
+  });
+</script>
+{% endblock %}

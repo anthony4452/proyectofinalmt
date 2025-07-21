@@ -1,0 +1,168 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+
+    <!-- Lista Correos -->
+    <div class="col-md-7">
+      <h4 class="mb-3">Correos registrados</h4>
+      <table class="table table-bordered table-striped" id="tbl_correos">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Destinatario</th>
+            <th>Asunto</th>
+            <th>Carnet QR</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for correo in correos %}
+          <tr>
+            <td>{{ correo.id }}</td>
+            <td>{{ correo.titulo }}</td>
+            <td>{{ correo.destinatario }}</td>
+            <td>{{ correo.asunto }}</td>
+            <td class="text-center">
+              {% if correo.carnet.qr_code %}
+                <a href="{{ correo.carnet.qr_code.url }}" target="_blank">Ver QR</a><br>
+                <img src="{{ correo.carnet.qr_code.url }}" alt="Código QR" style="max-width:100px; margin-top:5px;">
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>{{ correo.fecha|date:"Y-m-d H:i" }}</td>
+            <td class="text-center">
+              <div class="btn-group" role="group">
+                <a href="{% url 'editar_correo' correo.id %}" class="btn btn-outline-warning btn-sm" title="Editar">
+                  <i class="fas fa-edit"></i>Editar
+                </a>
+                <button type="button" class="btn btn-outline-danger btn-sm" title="Eliminar"
+                  onclick="eliminarCorreo('{{ correo.id }}');">
+                  <i class="fas fa-trash-alt"></i>Eliminar
+                </button>
+                <a href="{% url 'enviar_correo' correo.id %}" class="btn btn-outline-primary btn-sm" title="Enviar">
+                  <i class="fas fa-paper-plane"></i>Enviar
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center">No hay correos registrados</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Formulario -->
+    <div class="col-md-5">
+      <h4 class="mb-3">{% if correo_editar %}Editar Correo{% else %}Nuevo Correo{% endif %}</h4>
+      <form id="frm_correo" method="post" action="{% if correo_editar %}{% url 'editar_correo' correo_editar.id %}{% else %}{% url 'correos_form' %}{% endif %}">
+        {% csrf_token %}
+        <input type="hidden" name="id_correo" value="{{ correo_editar.id|default:'' }}" />
+        <div class="mb-3">
+          <label for="titulo" class="form-label">Título</label>
+          <input type="text" name="titulo" id="titulo" class="form-control" maxlength="100" value="{{ correo_editar.titulo|default:'' }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="destinatario" class="form-label">Correo del destinatario</label>
+          <input type="email" name="destinatario" id="destinatario" class="form-control" value="{{ correo_editar.destinatario|default:'' }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="asunto" class="form-label">Asunto</label>
+          <input type="text" name="asunto" id="asunto" class="form-control" maxlength="100" value="{{ correo_editar.asunto|default:'' }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="mensaje" class="form-label">Mensaje</label>
+          <textarea name="mensaje" id="mensaje" class="form-control" maxlength="1000" rows="4" required>{{ correo_editar.mensaje|default:'' }}</textarea>
+        </div>
+                    <div class="mb-3">
+              <label class="form-label">Carnet</label>
+              <select name="carnet" class="form-select" required>
+                <option value="">Seleccione un carnet</option>
+                {% for c in carnets %}
+                  <option value="{{ c.id }}" {% if correo_editar and correo_editar.carnet.id == c.id %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+              </select>
+            </div>
+        <button type="submit" class="btn btn-success w-100">
+          {% if correo_editar %}Actualizar{% else %}Guardar{% endif %}
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+<script>
+  function eliminarCorreo(id) {
+    if (confirm("¿Está seguro de eliminar este correo?")) {
+      window.location.href = "{% url 'eliminar_correo' 0 %}".replace("0", id);
+    }
+  }
+</script>
+
+<!-- jQuery Validation -->
+<script>
+  $("#frm_correo").validate({
+    rules: {
+      destinatario: {
+        required: true,
+        email: true
+      },
+      titulo: {
+        required: true,
+        maxlength: 100
+      },
+      asunto: {
+        required: true,
+        maxlength: 100
+      },
+      mensaje: {
+        required: true,
+        maxlength: 1000
+      },
+      carnet: {
+        required: true
+      }
+    },
+    messages: {
+      destinatario: "Debe ingresar un correo válido",
+      titulo: "Ingrese título",
+      asunto: "Ingrese asunto",
+      mensaje: "Ingrese mensaje",
+      carnet: "Seleccione un carnet"
+    },
+    errorClass: "is-invalid",
+    validClass: "is-valid",
+    errorElement: "div",
+    errorPlacement: function(error, element) {
+      error.addClass("invalid-feedback");
+      element.closest(".mb-3").append(error);
+    },
+    highlight: function(element) {
+      $(element).addClass("is-invalid").removeClass("is-valid");
+    },
+    unhighlight: function(element) {
+      $(element).removeClass("is-invalid").addClass("is-valid");
+    }
+  });
+</script>
+
+
+<script>
+  $(document).ready(function () {
+    $('#tbl_correos').DataTable({
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+      }
+    });
+  });
+</script>

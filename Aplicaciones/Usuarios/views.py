@@ -4,6 +4,8 @@ from .decorators import rol_requerido  # Donde guardes el decorador
 from django.db import transaction
 from .models import PerfilUsuario
 from django.contrib.auth.models import User
+from Aplicaciones.Temporadas.models import Temporada
+
 
 
 def login_view(request):
@@ -72,9 +74,20 @@ def registro_view(request):
 @rol_requerido('admin')
 def admin_dashboard(request):
     rol = request.user.perfilusuario.rol
-    return render(request, 'admin_dashboard.html', {'rol': rol})
-
+    
+    temporada = Temporada.objects.last()
+    
+    return render(request, 'admin_dashboard.html', {
+        'rol': rol,
+        'temporada_id': temporada.id if temporada else None,
+    })
 @rol_requerido('vocal')
 def vocal_dashboard(request):
     rol = request.user.perfilusuario.rol
-    return render(request, 'vocal_dashboard.html', {'rol': rol})
+    temporada = Temporada.objects.last()
+
+
+    return render(request, 'vocal_dashboard.html', {
+            'rol': rol,
+            'temporada_id': temporada.id if temporada else None,
+        })

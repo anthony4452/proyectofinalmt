@@ -1,0 +1,142 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Generar Carnets con QR</h2>
+
+<div class="row">
+  <!-- Tabla de jugadores -->
+  <div class="col-md-6">
+    <h3>Jugadores</h3>
+    <table id="tablaJugadores" class="table table-bordered table-striped table-hover">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Nombre</th>
+          <th>Equipo</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for jugador in jugadores %}
+        <tr>
+          <td class="text-center">{{ jugador.nombres }} {{ jugador.apellidos }}</td>
+          <td class="text-center">{{ jugador.nombre_equipo }}</td>
+          <td class="text-center">
+            <form action="{% url 'carnets:generar_carnet' jugador.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary btn-sm">Generar Carnet</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tabla de carnets generados -->
+  <div class="col-md-6">
+    <h3>Carnets generados</h3>
+    <table id="tablaCarnets" class="table table-bordered table-striped table-hover">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Jugador</th>
+          <th>QR Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if carnets %}
+          {% for carnet in carnets %}
+          <tr>
+            <td class="text-center">{{ carnet.jugador.nombres }} {{ carnet.jugador.apellidos }}</td>
+            <td class="text-center">
+              <img src="{{ carnet.qr_code.url }}" alt="QR de {{ carnet.jugador.nombres }}" width="150">
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="2" class="text-center">No hay carnets generados.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+ <div class="d-flex justify-content-start mt-3">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">
+                <i class="fa fa-arrow-left"></i> Volver
+            </a>
+        </div>
+</div>
+
+<!-- DataTables y configuración -->
+<script>
+  $(document).ready(function () {
+    $('#tablaJugadores').DataTable({
+      language: {
+        lengthMenu: 'Mostrar _MENU_ registros por página',
+        zeroRecords: 'No se encontraron resultados',
+        info: 'Mostrando página _PAGE_ de _PAGES_',
+        infoEmpty: 'No hay registros disponibles',
+        infoFiltered: '(filtrado de _MAX_ registros totales)',
+        search: 'Buscar:',
+        paginate: {
+          previous: 'Anterior',
+          next: 'Siguiente'
+        }
+      },
+      dom: 
+        "<'row mb-3'" +
+          "<'col-md-6 d-flex align-items-center'B>" +
+          "<'col-md-6 text-end'f>" +
+        ">" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row mt-2'" +
+          "<'col-sm-12 col-md-5'i>" +
+          "<'col-sm-12 col-md-7 d-flex justify-content-end'p>" +
+        ">",
+      buttons: [
+        { extend: 'copy', text: 'Copiar', className: 'btn btn-dark me-2 mb-2' },
+        { extend: 'csv', text: 'CSV', className: 'btn btn-success me-2 mb-2' },
+        { extend: 'excel', text: 'Excel', className: 'btn btn-success me-2 mb-2' },
+        { extend: 'pdf', text: 'PDF', className: 'btn btn-danger me-2 mb-2' },
+        { extend: 'print', text: 'Imprimir', className: 'btn btn-primary me-2 mb-2' }
+      ]
+    });
+
+    // Inicializa tabla Carnets solo si hay registros reales
+    if ($('#tablaCarnets tbody tr').length > 0 && !$('#tablaCarnets tbody tr td[colspan="2"]').length) {
+      $('#tablaCarnets').DataTable({
+        language: {
+          lengthMenu: 'Mostrar _MENU_ registros por página',
+          zeroRecords: 'No se encontraron resultados',
+          info: 'Mostrando página _PAGE_ de _PAGES_',
+          infoEmpty: 'No hay registros disponibles',
+          infoFiltered: '(filtrado de _MAX_ registros totales)',
+          search: 'Buscar:',
+          paginate: {
+            previous: 'Anterior',
+            next: 'Siguiente'
+          }
+        },
+        dom: 
+          "<'row mb-3'" +
+            "<'col-md-6 d-flex align-items-center'B>" +
+            "<'col-md-6 text-end'f>" +
+          ">" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row mt-2'" +
+            "<'col-sm-12 col-md-5'i>" +
+            "<'col-sm-12 col-md-7 d-flex justify-content-end'p>" +
+          ">",
+        buttons: [
+          { extend: 'copy', text: 'Copiar', className: 'btn btn-dark me-2 mb-2' },
+          { extend: 'csv', text: 'CSV', className: 'btn btn-success me-2 mb-2' },
+          { extend: 'excel', text: 'Excel', className: 'btn btn-success me-2 mb-2' },
+          { extend: 'pdf', text: 'PDF', className: 'btn btn-danger me-2 mb-2' },
+          { extend: 'print', text: 'Imprimir', className: 'btn btn-primary me-2 mb-2' }
+        ]
+      });
+    }
+  });
+</script>
+{% endblock %}

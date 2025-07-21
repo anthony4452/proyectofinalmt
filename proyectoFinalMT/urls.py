@@ -11,6 +11,12 @@ urlpatterns = [
     path('temporadas/', include('Aplicaciones.Temporadas.urls')),
     path('jugadores/', include('Aplicaciones.Jugadores.urls')),
     path('equipos/', include('Aplicaciones.Equipos.urls')),
+    path('fechas/', include('Aplicaciones.Fechas.urls')),
+    path('partidos/', include('Aplicaciones.Partidos.urls')),
+    path('partidos/', include('Aplicaciones.Carnets.urls')),
+    path('traspasos/', include('Aplicaciones.Traspasos.urls')),
+    path('correos/', include('Aplicaciones.Correos.urls')),
+    path('users/', include('Aplicaciones.Users.urls')),
 
 ]
 

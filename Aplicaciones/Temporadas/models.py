@@ -21,5 +21,5 @@ class Temporada(models.Model):
     #def tabla_posiciones(self):
         #return TablaPosicion.objects.filter(temporada=self)
 
-    #def __str__(self):
-        #return self.nombre
+    def __str__(self):
+        return self.nombretorneo

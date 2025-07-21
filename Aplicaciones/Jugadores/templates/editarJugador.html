@@ -1,0 +1,118 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-edit mb-4"> Editar Jugador</h1>
+
+    <form action="{% url 'guardar_edicion_jugador' jugador.id %}" method="POST" id="frm_editar_jugador" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="nombres">Nombres</label>
+        <input class="form-control" type="text" name="nombres" id="nombres" value="{{ jugador.nombres }}" />
+      </div>
+
+      <div class="form-group">
+        <label for="apellidos">Apellidos</label>
+        <input class="form-control" type="text" name="apellidos" id="apellidos" value="{{ jugador.apellidos }}" />
+      </div>
+
+      <div class="form-group">
+        <label for="nacimiento">Fecha de Nacimiento</label>
+        <input class="form-control" type="date" name="nacimiento" id="nacimiento" value="{{ jugador.nacimiento|date:'Y-m-d' }}" />
+      </div>
+
+      <div class="form-group">
+        <label for="posicion">Posición</label>
+        <input class="form-control" type="text" name="posicion" id="posicion" value="{{ jugador.posicion }}" />
+      </div>
+
+      <div class="form-group">
+        <label for="cedula">Cedula</label>
+        <input class="form-control" type="number" name="cedula" id="cedula" value="{{ jugador.cedula }}" />
+      </div>
+
+      <div class="form-group">
+        <label for="foto">Foto actual</label><br>
+        {% if jugador.foto %}
+          <img src="{{ jugador.foto.url }}" alt="Foto" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%;">
+        {% else %}
+          <span class="text-muted">No hay foto</span>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="foto">Actualizar Foto (opcional)</label>
+        <input type="file" name="foto" id="foto" />
+      </div>
+
+      <div class="form-group mt-4">
+        <button class="btn btn-primary" type="submit">
+          <i class="fa fa-save"></i> Guardar Cambios
+        </button>
+        <a href="{% url 'jugadores' %}" class="btn btn-secondary ml-2">
+          <i class="fa fa-arrow-left"></i> Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    $("#frm_editar_jugador").validate({
+      rules: {
+        nombres: { required: true, minlength: 2, maxlength: 100 },
+        apellidos: { required: true, minlength: 2, maxlength: 100 },
+        nacimiento: { required: true, date: true },
+        posicion: { required: true, minlength: 2, maxlength: 50 },
+        cedula: {
+          required: true,
+          minlength: 10,
+          maxlength: 10,
+          digits: true
+        }
+
+      },
+      messages: {
+        nombres: {
+          required: "Ingrese los nombres",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 100 caracteres"
+        },
+        apellidos: {
+          required: "Ingrese los apellidos",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 100 caracteres"
+        },
+        nacimiento: {
+          required: "Ingrese la fecha de nacimiento"
+        },
+        posicion: {
+          required: "Ingrese la posición",
+          minlength: "Debe tener al menos 2 caracteres",
+          maxlength: "No debe superar los 50 caracteres"
+        },
+        cedula: {
+          required: "Ingrese la cédula",
+          minlength: "Debe tener exactamente 10 dígitos",
+          maxlength: "Debe tener exactamente 10 dígitos",
+          digits: "Solo números"
+        }
+      }
+    });
+  });
+</script>
+<script>
+  $("#foto").fileinput({
+    language: "es",
+    allowedFileExtensions: ["jpg", "jpeg", "png"],
+    showCaption: false,
+    dropZoneEnabled: true,
+    showClose: false
+  });
+</script>
+{% endblock %}

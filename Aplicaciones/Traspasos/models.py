@@ -12,3 +12,8 @@ class Traspaso(models.Model):
 
     def __str__(self):
         return f"{self.jugador} - {self.desde_equipo} → {self.hacia_equipo}"
+    
+
+    
+    class Meta:
+        unique_together = ('jugador', 'temporada_origen')

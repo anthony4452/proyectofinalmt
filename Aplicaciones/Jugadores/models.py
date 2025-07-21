@@ -10,7 +10,7 @@ def detalle_equipo_temporada(request, equipo_id, temporada_id):
     equipo = get_object_or_404(Equipo, id=equipo_id)
     temporada = get_object_or_404(Temporada, id=temporada_id)
 
-    inscripciones = InscripcionJugador.objects.filter(equipo=equipo, temporada=temporada).select_related('jugador')
+    inscripciones = InscripcionJugadores.objects.filter(equipo=equipo, temporada=temporada).select_related('jugador')
     total_jugadores = inscripciones.count()
 
     context = {
@@ -20,7 +20,7 @@ def detalle_equipo_temporada(request, equipo_id, temporada_id):
         'total_jugadores': total_jugadores
     }
 
-    return render(request, 'jugadores/detalle_equipo_temporada.html', context)
+    return render(request, 'jugadores/detalles.html', context)
 
 class Jugador(models.Model):
     foto = models.FileField(upload_to='jugadores/', null=True, blank=True)
@@ -28,6 +28,8 @@ class Jugador(models.Model):
     apellidos = models.CharField(max_length=100)
     nacimiento = models.DateField()
     posicion = models.CharField(max_length=50)
+    cedula = models.CharField(max_length=10, null=True, blank=True)  # <-- agregar aquí
+
 
     @property
     def edad(self):
@@ -37,6 +39,27 @@ class Jugador(models.Model):
         if (hoy.month, hoy.day) < (self.nacimiento.month, self.nacimiento.day):
             edad -= 1
         return edad
+    
+    def equipo_actual(self, temporada=None):
+        from Aplicaciones.Carnets.models import InscripcionJugadores
+
+        try:
+            queryset = InscripcionJugadores.objects.filter(jugador=self)
+            if temporada:
+                queryset = queryset.filter(temporada=temporada)
+            else:
+                queryset = queryset.order_by('-temporada__fecha_inicio')
+
+            inscripcion = queryset.first()
+            if inscripcion:
+                return inscripcion.equipo
+            return None
+        except Exception:
+            return None
+
+
+    def __str__(self):
+        return f"{self.nombres} {self.apellidos}"
 
 class InscripcionJugadores(models.Model):
     jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)

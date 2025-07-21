@@ -1,0 +1,121 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Gestión de Traspasos</h2>
+
+<form id="form-traspaso" action="{% url 'traspasos:realizar' %}" method="POST">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="jugador" class="form-label">Jugador</label>
+    <select name="jugador" id="jugador" class="form-control">
+      <option value="">Seleccione un jugador</option>
+      {% for jugador in jugadores %}
+      <option value="{{ jugador.id }}">{{ jugador.nombres }} {{ jugador.apellidos }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="hacia_equipo" class="form-label">Nuevo equipo</label>
+    <select name="hacia_equipo" id="hacia_equipo" class="form-control">
+      <option value="">Seleccione un equipo</option>
+      {% for equipo in equipos %}
+      <option value="{{ equipo.id }}">{{ equipo.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Realizar traspaso</button>
+</form>
+
+<hr>
+
+<h3 class="mt-4">Historial de traspasos</h3>
+<table id="tabla-traspasos" class="table table-striped table-bordered">
+  <thead class="table-dark text-center">
+    <tr>
+      <th>Jugador</th>
+      <th>Desde</th>
+      <th>Hacia</th>
+      <th>Temporada</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for traspaso in traspasos %}
+    <tr>
+      <td>{{ traspaso.jugador.nombres }} {{ traspaso.jugador.apellidos }}</td>
+      <td>{{ traspaso.desde_equipo.nombre }}</td>
+      <td>{{ traspaso.hacia_equipo.nombre }}</td>
+      <td>{{ traspaso.temporada_origen }}</td>
+      <td>{{ traspaso.fecha_traspaso|date:"d/m/Y" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- jQuery, DataTables y jQuery Validate -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+  $('#tabla-traspasos').DataTable({
+    language: {
+      lengthMenu: 'Mostrar _MENU_ registros',
+      zeroRecords: 'No se encontraron traspasos',
+      info: 'Página _PAGE_ de _PAGES_',
+      search: 'Buscar:',
+      paginate: {
+        previous: 'Anterior',
+        next: 'Siguiente'
+      }
+    }
+  });
+
+  // Validación + AJAX
+  $('#form-traspaso').validate({
+    rules: {
+      jugador: { required: true },
+      hacia_equipo: { required: true }
+    },
+    messages: {
+      jugador: { required: 'Selecciona un jugador' },
+      hacia_equipo: { required: 'Selecciona un equipo de destino' }
+    },
+    submitHandler: function (form) {
+      $.ajax({
+        url: $(form).attr('action'),
+        method: 'POST',
+        data: $(form).serialize(),
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+        success: function (response) {
+          if (response.success) {
+            alert(response.message);
+            // Añadir fila nueva
+            $('#tabla-traspasos tbody').append(`
+              <tr>
+                <td>${response.traspaso.jugador}</td>
+                <td>${response.traspaso.desde_equipo}</td>
+                <td>${response.traspaso.hacia_equipo}</td>
+                <td>${response.traspaso.temporada}</td>
+                <td>${response.traspaso.fecha}</td>
+              </tr>
+            `);
+            $('#form-traspaso')[0].reset();
+          } else {
+            alert(response.message);
+          }
+        },
+        error: function () {
+          alert('Error al procesar la solicitud.');
+        }
+      });
+    }
+  });
+});
+</script>
+{% endblock %}

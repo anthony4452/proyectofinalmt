@@ -1,0 +1,52 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Detalle del Jugador</h2>
+
+  <div class="card p-4 shadow-sm rounded">
+
+    <div class="text-center mb-4">
+      {% if jugador.foto %}
+        <img src="{{ jugador.foto.url }}" alt="Foto" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+      {% else %}
+        <div style="width: 150px; height: 150px; background: #ccc; border-radius: 50%; display: inline-block;"></div>
+      {% endif %}
+    </div>
+
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>Nombres</th>
+          <td>{{ jugador.nombres }}</td>
+        </tr>
+        <tr>
+          <th>Apellidos</th>
+          <td>{{ jugador.apellidos }}</td>
+        </tr>
+        <tr>
+          <th>Fecha de Nacimiento</th>
+          <td>{{ jugador.nacimiento|date:"d/m/Y" }}</td>
+        </tr>
+        <tr>
+          <th>Edad</th>
+          <td>{{ jugador.edad }}</td>
+        </tr>
+        <tr>
+          <th>Posición</th>
+          <td>{{ jugador.posicion }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center gap-3">
+      <a href="{% url 'editar_jugador' jugador.id %}" class="btn btn-warning">
+        <i class="fa fa-edit"></i> Editar
+      </a>
+      <a href="{% url 'jugadores' %}" class="btn btn-secondary">
+        <i class="fa fa-arrow-left"></i> Volver
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

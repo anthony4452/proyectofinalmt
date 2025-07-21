@@ -1,0 +1,66 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="row col-md-6 justify-content-center mt-5">
+  <div class="bg-light p-4 rounded shadow">
+    <h2 class="mb-4 text-center">{{ fecha|default_if_none:"Nueva Fecha" }}</h2>
+    <form method="POST" id="frm_fecha" action="{% if fecha %}{% url 'guardar_edicion_fecha' fecha.id %}{% else %}{% url 'guardar_fecha' %}{% endif %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="temporada" class="form-label">Temporada</label>
+        <select name="temporada" id="temporada" class="form-select" required>
+          <option value="">Seleccione una temporada</option>
+          {% for t in temporadas %}
+          <option value="{{ t.id }}" {% if fecha and fecha.temporada.id == t.id %}selected{% endif %}>{{ t.nombreliga }} - {{ t.nombretorneo }} - {{ t.año }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="numero" class="form-label">Número de Fecha</label>
+        <input type="number" name="numero" id="numero" class="form-control" value="{{ fecha.numero|default_if_none:'' }}" min="1" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="fecha_programada" class="form-label">Fecha Programada</label>
+        <input type="date" name="fecha_programada" id="fecha_programada" class="form-control" value="{{ fecha.fecha_programada|date:'Y-m-d' if fecha }}" required />
+      </div>
+
+      <div class="d-flex justify-content-center gap-2 mt-4">
+        <button type="submit" class="btn btn-success">
+          <i class="fa fa-save"></i> Guardar
+        </button>
+        <a href="{% url 'lista_fechas' %}" class="btn btn-danger">
+          <i class="fa fa-times-circle"></i> Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $('#frm_fecha').validate({
+      rules: {
+        temporada: { required: true },
+        numero: { required: true, digits: true, min: 1 },
+        fecha_programada: { required: true, date: true }
+      },
+      messages: {
+        temporada: "Seleccione una temporada",
+        numero: {
+          required: "Ingrese el número de la fecha",
+          digits: "Solo números enteros",
+          min: "Debe ser al menos 1"
+        },
+        fecha_programada: "Ingrese una fecha válida"
+      },
+      errorClass: 'text-danger mt-1',
+      highlight: function(e) { $(e).addClass('is-invalid'); },
+      unhighlight: function(e) { $(e).removeClass('is-invalid'); }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="row col-md-12 justify-content-center mt-5">
+  <div class="col-md-6 bg-light p-4 rounded">
+    <h1 class="fa fa-edit mb-4"> Editar Inscripción</h1>
+
+    <form action="{% url 'guardar_edicion_inscripcion' inscripcion.id %}" method="POST" id="frm_editar_inscripcion">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="jugador">Jugador</label>
+        <select name="jugador" id="jugador" class="form-control">
+          <option value="">Seleccione...</option>
+          {% for j in jugadores %}
+            <option value="{{ j.id }}" {% if j.id == inscripcion.jugador.id %}selected{% endif %}>{{ j.nombres }} {{ j.apellidos }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="equipo">Equipo</label>
+        <select name="equipo" id="equipo" class="form-control">
+          <option value="">Seleccione...</option>
+          {% for e in equipos %}
+            <option value="{{ e.id }}" {% if e.id == inscripcion.equipo.id %}selected{% endif %}>{{ e.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="temporada">Temporada</label>
+        <select name="temporada" id="temporada" class="form-control">
+          <option value="">Seleccione...</option>
+          {% for t in temporadas %}
+            <option value="{{ t.id }}" {% if t.id == inscripcion.temporada.id %}selected{% endif %}>
+              {{ t.nombreliga }} - {{ t.nombretorneo }} - {{ t.año }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="numero">Número (dorsal)</label>
+        <input type="number" name="numero" id="numero" class="form-control" min="1" max="99" value="{{ inscripcion.numero }}" />
+      </div>
+
+      <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-save"></i> Guardar Cambios
+        </button>
+        <a href="{% url 'lista_inscripciones' %}" class="btn btn-secondary ml-2">
+          <i class="fa fa-arrow-left"></i> Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $("#frm_editar_inscripcion").validate({
+      rules: {
+        jugador: { required: true },
+        equipo: { required: true },
+        temporada: { required: true },
+        numero: { required: true, digits: true, min: 1, max: 99 }
+      },
+      messages: {
+        jugador: { required: "Seleccione un jugador" },
+        equipo: { required: "Seleccione un equipo" },
+        temporada: { required: "Seleccione una temporada" },
+        numero: {
+          required: "Ingrese un número",
+          digits: "Solo números válidos",
+          min: "El número mínimo es 1",
+          max: "El número máximo es 99"
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}
+
